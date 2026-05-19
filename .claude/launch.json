@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "capsule3",
+      "runtimeExecutable": "ruby",
+      "runtimeArgs": ["-run", "-e", "httpd", "/tmp/capsule3_preview", "-p", "3333"],
+      "port": 3333
+    }
+  ]
+}

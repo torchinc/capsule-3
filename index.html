@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>カプセル3 — 大人のための、ホビーと造形のタイムライン</title>
+<meta name="description" content="1990s-2000s ポップカルチャーのフィギュア・グッズ最新情報と、編集部による深掘り読み物。大人のための秘密基地。" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div id="tweaks-root"></div>
+
+<!-- ======================================================
+     HEADER
+     ====================================================== -->
+<header class="site-header">
+  <div class="container site-header__inner">
+    <button class="hamburger" id="hamburger" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="brand" aria-label="カプセル3 ホーム">
+      <span class="brand__mark" style="font-weight: 900">CAPSULE&nbsp;3</span>
+      <span class="brand__num">/&nbsp;フィギュア、グッズでよみがえるワクワク</span>
+    </a>
+
+    <nav class="nav" aria-label="メインナビゲーション">
+      <a class="nav__link nav__link--active" href="index.html">最新ホビーニュース</a>
+      <a class="nav__link" href="#editorial">読み物</a>
+    </nav>
+
+    <div class="header-tools">
+      <a class="bookmark-count" href="#bookmarks" title="保存中のブックマーク一覧へ">
+        <svg class="bookmark-count__icon" viewBox="0 0 12 14"><path d="M0 0h12v14L6 10 0 14z"/></svg>
+        BOOKMARK
+        <span class="bookmark-count__num" id="bookmark-count">0</span>
+      </a>
+      <button class="icon-btn" aria-label="検索">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="7" cy="7" r="5"></circle>
+          <path d="M11 11l4 4"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="container">
+      <a class="mobile-menu__link mobile-menu__link--active" href="index.html">最新ホビーニュース</a>
+      <a class="mobile-menu__link" href="#editorial">読み物</a>
+    </div>
+  </div>
+</header>
+
+<!-- ======================================================
+     PAGE BAND — タイトル + 日付
+     ====================================================== -->
+<section class="page-band">
+  <div class="container page-band__inner">
+    <div>
+      <div class="eyebrow">Timeline / 自動取得・新着順</div>
+      <h1 class="page-title">あの頃のワクワクを、もう一度。<br />今日のホビー・タイムライン。</h1>
+    </div>
+    <div class="page-meta">
+      <div><strong>2026.05.20</strong>&nbsp;TUE</div>
+      <div>UPDATED 07:42 JST</div>
+      <div>SOURCES&nbsp;/&nbsp;5</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+     FILTER CHIPS
+     ====================================================== -->
+<section class="filter-bar" aria-label="タグフィルター">
+  <div class="container filter-bar__inner">
+    <span class="filter-label">Tag&nbsp;/&nbsp;Filter</span>
+    <div class="chips-scroll">
+      <button class="chips-scroll__arrow" id="chips-prev" aria-label="タグを左にスクロール">
+        <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6.5 1.5L2.5 5l4 3.5"></path>
+        </svg>
+      </button>
+      <div class="chips" id="chips">
+      <button class="chip chip--active" data-tag="all">すべて</button>
+      <button class="chip" data-tag="figure">フィギュア</button>
+      <button class="chip" data-tag="kuji">一番くじ</button>
+      <button class="chip" data-tag="reissue">再販</button>
+      <button class="chip" data-tag="db">ドラゴンボール</button>
+      <button class="chip" data-tag="jump">ジャンプ</button>
+      <button class="chip" data-tag="ff">ファイナルファンタジー</button>
+      <button class="chip" data-tag="dq">ドラゴンクエスト</button>
+      <button class="chip" data-tag="goods">グッズ</button>
+      </div>
+      <button class="chips-scroll__arrow" id="chips-next" aria-label="タグを右にスクロール">
+        <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3.5 1.5L7.5 5l-4 3.5"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+     TIMELINE (Bento Grid)
+     ====================================================== -->
+<main class="container section" id="timeline">
+  <header class="section__header">
+    <span class="section__num">— 01</span>
+    <h2 class="section__title" style="font-size: 28px">最新ホビー・タイムライン</h2>
+  </header>
+
+  <div class="timeline-grid" id="timeline-grid">
+    <div class="rss-loading" style="grid-column:1/-1; padding:64px 0; text-align:center;">
+      <div style="font-family:var(--font-family-mono);font-size:11px;letter-spacing:0.12em;color:var(--color-secondary);">SE&nbsp;e-STORE&nbsp;RSS&nbsp;を取得中…</div>
+    </div>
+  </div>
+
+  <!-- Empty state (shown when no card matches) -->
+  <div id="empty-state" style="display:none; padding: 64px 0; text-align: center; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); margin-top: 24px;">
+    <div style="font-family: var(--font-family-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--color-secondary); text-transform: uppercase; margin-bottom: 16px;">NO&nbsp;RESULTS</div>
+    <p style="font-size: 14px; color: var(--color-primary); margin: 0 0 8px;">該当するキーワードの記事がまだありません。</p>
+    <p style="font-size: 13px; color: var(--color-secondary); margin: 0;">別のタグでお試しいただくか、「すべて」を選択してください。</p>
+  </div>
+
+</main>
+
+<!-- ======================================================
+     EDITORIAL — Deep Dive
+     ====================================================== -->
+<section class="editorial" id="editorial">
+  <div class="container">
+    <header class="section__header">
+      <span class="section__num">— 02</span>
+      <h2 class="section__title" style="font-size: 28px">読み物&nbsp;/&nbsp;Editorial Deep Dive</h2>
+      <a class="section__more" href="article.html">READ&nbsp;ARCHIVE&nbsp;→</a>
+    </header>
+
+    <div class="ed-grid">
+
+      <article class="ed-feature" data-ed-bm>
+        <button class="tl-card__bookmark ed-feature__bm" data-bm="ed-feat" aria-label="ブックマーク">
+          <svg viewBox="0 0 12 14" fill="currentColor"><path d="M0 0h12v14L6 10 0 14z"/></svg>
+        </button>
+        <a href="article.html" style="color:inherit; text-decoration:none;">
+          <div class="ed-feature__media">
+            <span class="placeholder">FEATURE&nbsp;IMAGE&nbsp;—&nbsp;16:9</span>
+          </div>
+        </a>
+        <div class="ed-feature__kicker">DEEP&nbsp;DIVE&nbsp;/&nbsp;造形美の系譜</div>
+        <h3 class="ed-feature__title">
+          <a href="article.html" style="color:inherit; text-decoration:none;">布の落ち感、塗装の深度。<br />大人の鑑賞に耐えうる造形美の、現在地。</a>
+        </h3>
+        <p class="ed-feature__excerpt">2000年代初頭、コレクター向けに開花した「ハイブランド・フィギュア」は、いまや美術品の領域に達した。素材選定、原型師の系譜、そして大人が部屋に飾るときの"間"の取り方まで——編集部が30名の造形師と11社の取材から導いた、現代造形の見取り図。</p>
+        <div class="ed-feature__meta">
+          <span>EDITORIAL&nbsp;/&nbsp;ISSUE&nbsp;04</span>
+          <span>2026.05.18</span>
+          <span>READ&nbsp;TIME&nbsp;12&nbsp;MIN</span>
+        </div>
+      </article>
+
+      <div class="ed-list">
+        <article class="ed-row" data-ed-bm>
+          <a href="article.html" style="display:contents;">
+            <div class="ed-row__media"><span class="placeholder">IMG</span></div>
+          </a>
+          <div>
+            <div class="ed-row__kicker">DISPLAY&nbsp;TIPS</div>
+            <h4 class="ed-row__title"><a href="article.html" style="color:inherit; text-decoration:none;">無印的な部屋に、フィギュアを置く。境界線としての「台座」の使い方。</a></h4>
+            <div class="ed-row__footer">
+              <span class="ed-row__meta">05.17&nbsp;/&nbsp;READ&nbsp;8&nbsp;MIN</span>
+              <button class="ed-bm" aria-label="ブックマーク">
+                <svg viewBox="0 0 12 14"><path d="M0 0h12v14L6 10 0 14z"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="ed-row" data-ed-bm>
+          <a href="article.html" style="display:contents;">
+            <div class="ed-row__media"><span class="placeholder">IMG</span></div>
+          </a>
+          <div>
+            <div class="ed-row__kicker">HISTORY</div>
+            <h4 class="ed-row__title"><a href="article.html" style="color:inherit; text-decoration:none;">原型師という職能の25年史。フィギュア黎明期から現代までの転換点。</a></h4>
+            <div class="ed-row__footer">
+              <span class="ed-row__meta">05.14&nbsp;/&nbsp;READ&nbsp;15&nbsp;MIN</span>
+              <button class="ed-bm" aria-label="ブックマーク">
+                <svg viewBox="0 0 12 14"><path d="M0 0h12v14L6 10 0 14z"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="ed-row" data-ed-bm>
+          <a href="article.html" style="display:contents;">
+            <div class="ed-row__media"><span class="placeholder">IMG</span></div>
+          </a>
+          <div>
+            <div class="ed-row__kicker">COLUMN</div>
+            <h4 class="ed-row__title"><a href="article.html" style="color:inherit; text-decoration:none;">「あの夏のパーティ」を部屋に再現する。RPGディスプレイ実践譜。</a></h4>
+            <div class="ed-row__footer">
+              <span class="ed-row__meta">05.10&nbsp;/&nbsp;READ&nbsp;6&nbsp;MIN</span>
+              <button class="ed-bm" aria-label="ブックマーク">
+                <svg viewBox="0 0 12 14"><path d="M0 0h12v14L6 10 0 14z"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="ed-row" data-ed-bm>
+          <a href="article.html" style="display:contents;">
+            <div class="ed-row__media"><span class="placeholder">IMG</span></div>
+          </a>
+          <div>
+            <div class="ed-row__kicker">INTERVIEW</div>
+            <h4 class="ed-row__title"><a href="article.html" style="color:inherit; text-decoration:none;">「単なる商品ではない」造形監督A氏に聞く、立体化が止まる瞬間。</a></h4>
+            <div class="ed-row__footer">
+              <span class="ed-row__meta">05.07&nbsp;/&nbsp;READ&nbsp;11&nbsp;MIN</span>
+              <button class="ed-bm" aria-label="ブックマーク">
+                <svg viewBox="0 0 12 14"><path d="M0 0h12v14L6 10 0 14z"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+     FOOTER
+     ====================================================== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <span class="brand__mark">CAPSULE&nbsp;3</span>
+          <span class="brand__num">/&nbsp;フィギュア、グッズでよみがえるワクワク</span>
+        </div>
+        <p>あの頃のワクワクを、もう一度。大人のためのサードプレイス。誰もが夢中になった1990s-2000s作品を中心に、ワクワクと大好きを届けます。</p>
+      </div>
+      <div class="footer-col">
+        <h4>Sections</h4>
+        <ul>
+          <li><a href="#">タイムライン</a></li>
+          <li><a href="#">読み物</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <ul>
+          <li><a href="#">編集部紹介</a></li>
+          <li><a href="#">寄稿について</a></li>
+          <li><a href="#">広告掲載</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">プライバシーポリシー</a></li>
+          <li><a href="#">利用規約</a></li>
+          <li><a href="#">特定商取引法</a></li>
+          <li><a href="#">お問い合わせ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CAPSULE 3 EDITORIAL. ALL RIGHTS RESERVED.</span>
+      <span>BUILT WITH RSS&nbsp;/&nbsp;HAND-CURATED EDITORIAL</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Hamburger toggle ──────────────────────────────────────
+  (function() {
+    const btn = document.getElementById('hamburger');
+    const menu = document.getElementById('mobile-menu');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      menu.setAttribute('data-open', String(!open));
+      btn.setAttribute('aria-label', !open ? 'メニューを閉じる' : 'メニューを開く');
+    });
+    menu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('data-open', 'false');
+      });
+    });
+  })();
+
+  // ── Chip scroll arrows ────────────────────────────────────
+  (function() {
+    const scroller = document.getElementById('chips');
+    const prev = document.getElementById('chips-prev');
+    const next = document.getElementById('chips-next');
+    if (!scroller || !prev || !next) return;
+    function update() {
+      const max = scroller.scrollWidth - scroller.clientWidth;
+      prev.disabled = scroller.scrollLeft <= 1;
+      next.disabled = scroller.scrollLeft >= max - 1;
+      const noOverflow = max <= 0;
+      prev.style.visibility = noOverflow ? 'hidden' : '';
+      next.style.visibility = noOverflow ? 'hidden' : '';
+    }
+    prev.addEventListener('click', () => { scroller.scrollBy({ left: -220, behavior: 'smooth' }); });
+    next.addEventListener('click', () => { scroller.scrollBy({ left: 220, behavior: 'smooth' }); });
+    scroller.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+    setTimeout(update, 200);
+  })();
+
+  // ── Tag filter + bookmark filter ──────────────────────────
+  // Uses live DOM queries so it works after RSS populates the grid.
+  (function() {
+    const chips      = document.querySelectorAll('#chips .chip');
+    const emptyState = document.getElementById('empty-state');
+    const bookmarkLink = document.querySelector('.bookmark-count');
+    const countEl    = document.getElementById('bookmark-count');
+    const edBookmarks = document.querySelectorAll('.ed-bm');
+    const edEntries  = document.querySelectorAll('[data-ed-bm]');
+    const editorial  = document.getElementById('editorial');
+    let bookmarkOnly = false;
+
+    const emptyTitle   = emptyState.querySelector('p:nth-of-type(1)');
+    const emptySub     = emptyState.querySelector('p:nth-of-type(2)');
+    const emptyEyebrow = emptyState.querySelector('div');
+
+    function activeTag() {
+      const active = document.querySelector('#chips .chip--active');
+      return active ? active.getAttribute('data-tag') : 'all';
+    }
+
+    function isEntryBookmarked(entry) {
+      const bm = entry.querySelector('.tl-card__bookmark, .ed-bm');
+      return bm && bm.classList.contains('is-on');
+    }
+
+    function applyFilter() {
+      const tag = activeTag();
+      // Live queries — always reflect current DOM including RSS-injected cards
+      const cards      = document.querySelectorAll('.timeline-grid .tl-card[data-tags]');
+      const sideStacks = document.querySelectorAll('.timeline-grid [data-stack]');
+
+      let visibleCount = 0;
+      cards.forEach(card => {
+        if (card.hasAttribute('data-more')) return; // leave paginated-hidden items alone
+        const tags = (card.getAttribute('data-tags') || '').split(/\s+/);
+        const matchTag = (tag === 'all') || tags.includes(tag);
+        const match = bookmarkOnly ? isEntryBookmarked(card) : matchTag;
+        card.style.display = match ? '' : 'none';
+        if (match) visibleCount++;
+      });
+      sideStacks.forEach(stack => {
+        const kids = stack.querySelectorAll('.tl-card[data-tags]');
+        const allHidden = Array.from(kids).every(k => k.style.display === 'none');
+        stack.style.display = allHidden ? 'none' : '';
+      });
+      emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+
+      // Hide VIEW MORE buttons in bookmark mode
+      document.querySelectorAll('[data-view-more]').forEach(btn => {
+        btn.parentElement.style.display = bookmarkOnly ? 'none' : '';
+      });
+
+      let edVisible = 0;
+      edEntries.forEach(entry => {
+        const match = bookmarkOnly ? isEntryBookmarked(entry) : true;
+        entry.style.display = match ? '' : 'none';
+        if (match) edVisible++;
+      });
+      if (editorial) editorial.style.display = (bookmarkOnly && edVisible === 0) ? 'none' : '';
+
+      if (bookmarkOnly && visibleCount === 0) {
+        emptyEyebrow.textContent = 'NO  BOOKMARKS';
+        emptyTitle.textContent = 'ブックマークした記事はまだありません。';
+        emptySub.textContent   = '気になるカード右上の▼マークから保存できます。';
+      } else {
+        emptyEyebrow.textContent = 'NO  RESULTS';
+        emptyTitle.textContent = '該当するキーワードの記事がまだありません。';
+        emptySub.textContent   = '別のタグでお試しいただくか、「すべて」を選択してください。';
+      }
+    }
+
+    function recount() {
+      countEl.textContent = document.querySelectorAll('.tl-card__bookmark.is-on, .ed-bm.is-on').length;
+    }
+
+    function wireBookmarkToggle(btn) {
+      if (btn.dataset.wired) return;
+      btn.dataset.wired = '1';
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        btn.classList.toggle('is-on');
+        recount();
+        if (bookmarkOnly) applyFilter();
+      });
+    }
+
+    // Expose so RSS loader can wire new bookmark buttons after grid update
+    window.wireTimelineBookmarks = function() {
+      document.querySelectorAll('.timeline-grid .tl-card__bookmark').forEach(wireBookmarkToggle);
+    };
+    window.applyTimelineFilter = applyFilter;
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        bookmarkOnly = false;
+        bookmarkLink.classList.remove('is-active');
+        chips.forEach(c => c.classList.remove('chip--active'));
+        chip.classList.add('chip--active');
+        applyFilter();
+      });
+    });
+
+    edBookmarks.forEach(wireBookmarkToggle);
+
+    bookmarkLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      bookmarkOnly = !bookmarkOnly;
+      bookmarkLink.classList.toggle('is-active', bookmarkOnly);
+      if (bookmarkOnly) {
+        chips.forEach(c => c.classList.remove('chip--active'));
+        const tl = document.getElementById('timeline');
+        if (tl) {
+          const headerH = document.querySelector('.site-header').offsetHeight;
+          const filterH = document.querySelector('.filter-bar').offsetHeight;
+          const y = tl.getBoundingClientRect().top + window.scrollY - headerH - filterH - 16;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      } else {
+        const allChip = document.querySelector('#chips .chip[data-tag="all"]');
+        if (allChip) allChip.classList.add('chip--active');
+      }
+      applyFilter();
+    });
+
+    recount();
+  })();
+
+  // ── Multi-source timeline loader (SE e-STORE + 一番くじ) ──────
+  (function() {
+    const PROXY  = 'https://api.codetabs.com/v1/proxy?quest=';
+    const grid   = document.getElementById('timeline-grid');
+    const BM_SVG = '<svg viewBox="0 0 12 14" fill="currentColor"><path d="M0 0h12v14L6 10 0 14z"/></svg>';
+
+    // ── Shared utilities ──────────────────────────────────────
+    function escapeHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function detectTags(title) {
+      const tags = [];
+      if (/ファイナルファンタジー|FINAL FANTASY|FF\s*[IVX\d]/i.test(title)) tags.push('ff');
+      if (/ドラゴンクエスト|DRAGON QUEST|DQ\s*\d/i.test(title))            tags.push('dq');
+      if (/ドラゴンボール|DRAGON BALL|dragon.?ball/i.test(title))           tags.push('db');
+      if (/ジャンプ|JUMP|少年ジャンプ/i.test(title))                        tags.push('jump');
+      if (/フィギュア|figure|スタチュー|statue/i.test(title))               tags.push('figure');
+      if (/プラモ|プラスチックモデル|model kit/i.test(title))               tags.push('figure');
+      if (/くじ|KUJI/i.test(title))                                         tags.push('kuji');
+      if (/再販|再受注|reissue/i.test(title))                               tags.push('reissue');
+      if (tags.length === 0) tags.push('goods');
+      return tags.join(' ');
+    }
+
+    function formatIsoDate(isoStr) {
+      if (!isoStr) return '';
+      const d = new Date(isoStr);
+      if (isNaN(d)) return '';
+      const mm  = String(d.getMonth() + 1).padStart(2, '0');
+      const dd  = String(d.getDate()).padStart(2, '0');
+      const hh  = String(d.getHours()).padStart(2, '0');
+      const min = String(d.getMinutes()).padStart(2, '0');
+      return `${mm}.${dd}&nbsp;${hh}:${min}`;
+    }
+
+    // ── SE e-STORE helpers ────────────────────────────────────
+    function getSeImageUrl(link) {
+      const m = link.match(/\/item\/([^/.]+)\.html/);
+      if (!m) return null;
+      return `https://store.jp.square-enix.com/client_info/SQEX_ESTORE/itemimage/${m[1]}/ITEM_IMAGE1.jpg`;
+    }
+
+    function makeSeMedia(link, label) {
+      const imgUrl = getSeImageUrl(link);
+      if (imgUrl) {
+        return `<div class="tl-card__media" style="background:var(--color-bg-base);">
+          <img src="${imgUrl}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>${label}</span>';" />
+        </div>`;
+      }
+      return `<div class="tl-card__media"><span class="placeholder">${label}</span></div>`;
+    }
+
+    function makeSeCard(item, variantClass, bmId) {
+      const tags = detectTags(item.title);
+      return `
+        <article class="tl-card ${variantClass}" data-tags="${tags}">
+          ${makeSeMedia(item.link, 'SE&nbsp;e-STORE')}
+          <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="${bmId}">${BM_SVG}</button>
+          <div class="tl-card__body">
+            <div class="tl-card__meta">
+              <span class="tl-card__source">SE&nbsp;e-STORE</span>
+              <span>${formatIsoDate(item.date)}</span>
+            </div>
+            <h3 class="tl-card__title">
+              <a href="${escapeHtml(item.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escapeHtml(item.title)}</a>
+            </h3>
+          </div>
+        </article>`;
+    }
+
+    function makeSeHero(item, bmId) {
+      return `
+        <article class="tl-card tl-card--hero" data-tags="${detectTags(item.title)}">
+          ${makeSeMedia(item.link, 'SE&nbsp;e-STORE&nbsp;—&nbsp;LATEST')}
+          <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="${bmId}">${BM_SVG}</button>
+          <div class="tl-card__body"><div>
+            <div class="tl-card__meta">
+              <span class="tl-card__source">SE&nbsp;e-STORE</span>
+              <span>${formatIsoDate(item.date)}</span>
+            </div>
+            <h3 class="tl-card__title">
+              <a href="${escapeHtml(item.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escapeHtml(item.title)}</a>
+            </h3>
+          </div></div>
+        </article>`;
+    }
+
+    function makeSeStack(item1, item2) {
+      return `
+        <div class="side-stack" data-stack="true">
+          <article class="tl-card" data-tags="${detectTags(item1.title)}">
+            ${makeSeMedia(item1.link, 'SE&nbsp;e-STORE')}
+            <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="rss-s1">${BM_SVG}</button>
+            <div class="tl-card__body">
+              <div class="tl-card__meta">
+                <span class="tl-card__source">SE&nbsp;e-STORE</span>
+                <span>${formatIsoDate(item1.date)}</span>
+              </div>
+              <h3 class="tl-card__title">
+                <a href="${escapeHtml(item1.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escapeHtml(item1.title)}</a>
+              </h3>
+            </div>
+          </article>
+          <article class="tl-card" data-tags="${detectTags(item2.title)}">
+            ${makeSeMedia(item2.link, 'SE&nbsp;e-STORE')}
+            <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="rss-s2">${BM_SVG}</button>
+            <div class="tl-card__body">
+              <div class="tl-card__meta">
+                <span class="tl-card__source">SE&nbsp;e-STORE</span>
+                <span>${formatIsoDate(item2.date)}</span>
+              </div>
+              <h3 class="tl-card__title">
+                <a href="${escapeHtml(item2.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escapeHtml(item2.title)}</a>
+              </h3>
+            </div>
+          </article>
+        </div>`;
+    }
+
+    // ── 一番くじ helpers ──────────────────────────────────────
+    function formatKujiDate(str) {
+      if (!str) return '';
+      // "2026.05.18" → "05.18"
+      const parts = str.trim().split('.');
+      return parts.length >= 3 ? `${parts[1]}.${parts[2]}` : str;
+    }
+
+    function makeKujiCard(item, variantClass, bmId, idx) {
+      return `
+        <article class="tl-card ${variantClass}" data-tags="kuji">
+          <div class="tl-card__media" id="kuji-media-${idx}"><span class="placeholder">一番くじ</span></div>
+          <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="${bmId}">${BM_SVG}</button>
+          <div class="tl-card__body">
+            <div class="tl-card__meta">
+              <span class="tl-card__source" style="background:var(--color-accent-warm);color:#fff;padding:1px 6px;border-radius:2px;">1KUJI</span>
+              <span>${formatKujiDate(item.date)}</span>
+            </div>
+            <h3 class="tl-card__title">
+              <a href="${escapeHtml(item.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escapeHtml(item.title)}</a>
+            </h3>
+          </div>
+        </article>`;
+    }
+
+    // ── Source fetchers ───────────────────────────────────────
+    function loadSE() {
+      const RSS_URL = 'https://store.jp.square-enix.com/rss.xml';
+      return fetch(PROXY + encodeURIComponent(RSS_URL))
+        .then(r => r.text())
+        .then(data => {
+          const xml   = new DOMParser().parseFromString(data, 'text/xml');
+          const DC_NS = 'http://purl.org/dc/elements/1.1/';
+          return Array.from(xml.querySelectorAll('item')).slice(0, 12).map(el => ({
+            title: el.querySelector('title')?.textContent?.trim() || '(タイトルなし)',
+            link:  el.querySelector('link')?.textContent?.trim()  || '#',
+            date:  el.getElementsByTagNameNS(DC_NS, 'date')[0]?.textContent?.trim() || '',
+          }));
+        });
+    }
+
+    function loadKuji() {
+      const TOPICS_URL = 'https://1kuji.com/topics';
+      const BASE = 'https://1kuji.com';
+      return fetch(PROXY + encodeURIComponent(TOPICS_URL))
+        .then(r => r.text())
+        .then(html => {
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          return Array.from(doc.querySelectorAll('.infoColInner li')).slice(0, 12).map(li => {
+            const a       = li.querySelector('a');
+            const timeEl  = li.querySelector('time');
+            const titleEl = li.querySelector('.title');
+            if (!a || !titleEl) return null;
+            const href = a.getAttribute('href') || '';
+            return {
+              title: titleEl.textContent.trim(),
+              link:  href.startsWith('http') ? href : BASE + href,
+              date:  timeEl ? timeEl.textContent.trim() : '',
+            };
+          }).filter(Boolean);
+        });
+    }
+
+    // ── Dragon Ball official helpers ──────────────────────────
+    function formatDbDate(str) {
+      if (!str) return '';
+      const parts = str.trim().split('.');
+      return parts.length >= 3 ? `${parts[1]}.${parts[2]}` : str;
+    }
+
+    function makeDbCard(item, variantClass, bmId) {
+      const mediaHtml = item.image
+        ? `<div class="tl-card__media" style="background:#000;">
+            <img src="${escapeHtml(item.image)}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>DRAGON BALL</span>'; this.parentElement.style.background='';" />
+          </div>`
+        : `<div class="tl-card__media"><span class="placeholder">DRAGON&nbsp;BALL</span></div>`;
+      return `
+        <article class="tl-card ${variantClass}" data-tags="db">
+          ${mediaHtml}
+          <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="${bmId}">${BM_SVG}</button>
+          <div class="tl-card__body">
+            <div class="tl-card__meta">
+              <span class="tl-card__source" style="background:#e85a24;color:#fff;padding:1px 6px;border-radius:2px;">DB&nbsp;OFFICIAL</span>
+              <span>${formatDbDate(item.date)}</span>
+            </div>
+            <h3 class="tl-card__title">
+              <a href="${escapeHtml(item.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escapeHtml(item.title)}</a>
+            </h3>
+          </div>
+        </article>`;
+    }
+
+    function loadDragonBall() {
+      const DB_URL = 'https://dragon-ball-official.com/news/';
+      const BASE   = 'https://dragon-ball-official.com';
+      return fetch(PROXY + encodeURIComponent(DB_URL))
+        .then(r => r.text())
+        .then(html => {
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          return Array.from(doc.querySelectorAll('.list-format li')).slice(0, 12).map(li => {
+            const a      = li.querySelector('a');
+            const img    = li.querySelector('.thumb img');
+            const textEl = li.querySelector('.text-area .text, p.text');
+            const dateEl = li.querySelector('.schedule');
+            if (!a) return null;
+            const href  = a.getAttribute('href') || '';
+            const link  = href.startsWith('http') ? href : BASE + href;
+            const src   = img ? img.getAttribute('src') : null;
+            const image = src ? (src.startsWith('http') ? src : BASE + src) : null;
+            return {
+              title: (textEl?.textContent || img?.getAttribute('alt') || '').trim(),
+              link,
+              image,
+              date: dateEl?.textContent?.trim() || '',
+            };
+          }).filter(item => item && item.title);
+        });
+    }
+
+    // ── 少年ジャンプ helpers ──────────────────────────────────
+    function makeSjCard(item, variantClass, bmId) {
+      const mediaHtml = item.image
+        ? `<div class="tl-card__media" style="background:#fff;">
+            <img src="${escapeHtml(item.image)}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>JUMP</span>'; this.parentElement.style.background='';" />
+          </div>`
+        : `<div class="tl-card__media"><span class="placeholder">JUMP</span></div>`;
+      return `
+        <article class="tl-card ${variantClass}" data-tags="jump">
+          ${mediaHtml}
+          <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="${bmId}">${BM_SVG}</button>
+          <div class="tl-card__body">
+            <div class="tl-card__meta">
+              <span class="tl-card__source" style="background:#d00;color:#fff;padding:1px 6px;border-radius:2px;">少年ジャンプ</span>
+              <span>${formatDbDate(item.date)}</span>
+            </div>
+            <h3 class="tl-card__title">
+              <a href="${escapeHtml(item.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escapeHtml(item.title)}</a>
+            </h3>
+          </div>
+        </article>`;
+    }
+
+    function loadShonenJump() {
+      const SJ_URL = 'https://www.shonenjump.com/j/news/newsmore_goods.html';
+      const BASE   = 'https://www.shonenjump.com';
+      return fetch(PROXY + encodeURIComponent(SJ_URL))
+        .then(r => r.text())
+        .then(html => {
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          return Array.from(doc.querySelectorAll('li.newsList')).slice(0, 12).map(li => {
+            const a      = li.querySelector('a');
+            const img    = li.querySelector('.image img');
+            const p      = li.querySelector('p');
+            const timeEl = li.querySelector('time');
+            if (!a || !p) return null;
+            // Extract title without the date text
+            const pClone = p.cloneNode(true);
+            pClone.querySelector('time')?.remove();
+            const title = pClone.textContent.trim();
+            if (!title) return null;
+            const href  = a.getAttribute('href') || '';
+            const link  = href.startsWith('http') ? href : BASE + href;
+            const src   = img ? img.getAttribute('src') : null;
+            const image = src ? (src.startsWith('http') ? src : BASE + src) : null;
+            return { title, link, image, date: timeEl?.textContent?.trim() || '' };
+          }).filter(Boolean);
+        });
+    }
+
+    // ── 電撃ホビーウェブ helpers ──────────────────────────────
+    function makeDengekiCard(item, variantClass, bmId) {
+      const mediaHtml = item.image
+        ? `<div class="tl-card__media" style="background:#111;">
+            <img src="${escapeHtml(item.image)}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>電撃HOBBY</span>'; this.parentElement.style.background='';" />
+          </div>`
+        : `<div class="tl-card__media"><span class="placeholder">電撃HOBBY</span></div>`;
+      const dateParts = (item.date || '').split('.');
+      const dateStr = dateParts.length >= 3 ? `${dateParts[1]}.${dateParts[2]}` : item.date;
+      return `
+        <article class="tl-card ${variantClass}" data-tags="${detectTags(item.title) || 'figure'}">
+          ${mediaHtml}
+          <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="${bmId}">${BM_SVG}</button>
+          <div class="tl-card__body">
+            <div class="tl-card__meta">
+              <span class="tl-card__source" style="background:#333;color:#fff;padding:1px 6px;border-radius:2px;">電撃HOBBY</span>
+              <span>${dateStr}</span>
+            </div>
+            <h3 class="tl-card__title">
+              <a href="${escapeHtml(item.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escapeHtml(item.title)}</a>
+            </h3>
+          </div>
+        </article>`;
+    }
+
+    function loadDengeki() {
+      const DH_URL = 'https://hobby.dengeki.com/news/';
+      return fetch(PROXY + encodeURIComponent(DH_URL))
+        .then(r => r.text())
+        .then(html => {
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const items = [];
+          let currentDate = '';
+          Array.from(doc.querySelectorAll('.archive-post > *')).forEach(el => {
+            if (el.classList.contains('date')) {
+              currentDate = el.querySelector('span')?.textContent?.trim() || '';
+            } else if (el.classList.contains('post-item')) {
+              const a        = el.querySelector('.thumb a.inner') || el.querySelector('.summary h2 a.inner');
+              const img      = el.querySelector('.thumb img');
+              const titleEl  = el.querySelector('.summary h2 a.inner');
+              if (!a || !titleEl) return;
+              const href     = a.getAttribute('href') || '';
+              const lazySrc  = img?.getAttribute('data-lazy-src') || '';
+              // Upgrade from 160×160 thumbnail to full-size
+              const image    = lazySrc && !lazySrc.includes('1x1.trans')
+                ? lazySrc.replace(/-\d+x\d+\.jpg/, '.jpg')
+                : null;
+              items.push({
+                title: titleEl.textContent.trim(),
+                link:  href.startsWith('http') ? href : 'https://hobby.dengeki.com' + href,
+                image,
+                date:  currentDate,
+              });
+            }
+          });
+          return items.slice(0, 12);
+        });
+    }
+
+    // After render: fetch each kuji topic page for its main image (background, non-blocking)
+    function loadKujiImages(items) {
+      items.forEach((item, i) => {
+        setTimeout(() => {
+          const ctrl = new AbortController();
+          const timer = setTimeout(() => ctrl.abort(), 9000);
+          fetch(PROXY + encodeURIComponent(item.link), { signal: ctrl.signal })
+            .then(r => r.text())
+            .then(pageHtml => {
+              clearTimeout(timer);
+              const pageDoc = new DOMParser().parseFromString(pageHtml, 'text/html');
+              const img = pageDoc.querySelector('.imgCol img');
+              const src = img ? img.getAttribute('src') : null;
+              const url = src && src.startsWith('/') ? 'https://1kuji.com' + src : src;
+              if (!url) return;
+              const mediaEl = document.getElementById(`kuji-media-${i}`);
+              if (mediaEl) {
+                mediaEl.style.background = 'var(--color-bg-base)';
+                mediaEl.innerHTML = `<img src="${escapeHtml(url)}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>一番くじ</span>'; this.parentElement.style.background='';" />`;
+              }
+            })
+            .catch(() => clearTimeout(timer));
+        }, i * 350);
+      });
+    }
+
+    // ── Render helpers ────────────────────────────────────────
+    const INITIAL = 4;
+    const MONO = 'font-family:var(--font-family-mono);font-size:10px;letter-spacing:0.14em;color:var(--color-secondary);text-transform:uppercase;';
+
+    function sectionDivider(label, addBorder) {
+      const border = addBorder ? 'border-top:1px solid var(--color-border);margin-top:16px;' : '';
+      return `<div style="grid-column:1/-1;padding:${addBorder ? '32px' : '0'} 0 8px;${border}">
+        <span style="${MONO}">${label}</span>
+      </div>`;
+    }
+
+    function hideExtra(cardHtml, src) {
+      return cardHtml.replace('<article ', `<article data-more="${src}" style="display:none;" `);
+    }
+
+    function viewMoreBtn(src, extra) {
+      if (extra <= 0) return '';
+      return `<div style="grid-column:1/-1;text-align:center;padding:24px 0 8px;">
+        <button class="btn btn--ghost" data-view-more="${src}">VIEW&nbsp;MORE&nbsp;/&nbsp;さらに${extra}件表示</button>
+      </div>`;
+    }
+
+    function renderSection(items, makeCard, src, label, addBorder) {
+      if (!items.length) return '';
+      let h = sectionDivider(label, addBorder);
+      items.forEach((item, i) => {
+        const card = makeCard(item, i);
+        h += i < INITIAL ? card : hideExtra(card, src);
+      });
+      h += viewMoreBtn(src, Math.max(0, items.length - INITIAL));
+      return h;
+    }
+
+    // ── Render ────────────────────────────────────────────────
+    Promise.allSettled([loadSE(), loadKuji(), loadDragonBall(), loadShonenJump(), loadDengeki()]).then(([seResult, kujiResult, dbResult, sjResult, dhResult]) => {
+      const seItems   = seResult.status   === 'fulfilled' ? seResult.value   : [];
+      const kujiItems = kujiResult.status === 'fulfilled' ? kujiResult.value : [];
+      const dbItems   = dbResult.status   === 'fulfilled' ? dbResult.value   : [];
+      const sjItems   = sjResult.status   === 'fulfilled' ? sjResult.value   : [];
+      const dhItems   = dhResult.status   === 'fulfilled' ? dhResult.value   : [];
+
+      if (!seItems.length && !kujiItems.length && !dbItems.length && !sjItems.length && !dhItems.length) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;padding:48px 0;text-align:center;border-top:1px solid var(--color-border);">
+            <div style="${MONO}">データの取得に失敗しました。ネットワークを確認してください。</div>
+          </div>`;
+        return;
+      }
+
+      let anyPrev = false;
+      let html = '';
+
+      html += renderSection(kujiItems, (item, i) => makeKujiCard(item, 'tl-card--quad', `kuji-${i}`, i), 'kuji', 'SOURCE&nbsp;01&nbsp;/&nbsp;1KUJI.COM&nbsp;—&nbsp;一番くじ公式', false);
+      if (kujiItems.length) anyPrev = true;
+
+      html += renderSection(dbItems, (item, i) => makeDbCard(item, 'tl-card--quad', `db-${i}`), 'db', 'SOURCE&nbsp;02&nbsp;/&nbsp;DRAGON-BALL-OFFICIAL.COM', anyPrev);
+      if (dbItems.length) anyPrev = true;
+
+      html += renderSection(sjItems, (item, i) => makeSjCard(item, 'tl-card--quad', `sj-${i}`), 'sj', 'SOURCE&nbsp;03&nbsp;/&nbsp;SHONENJUMP.COM&nbsp;—&nbsp;グッズ情報', anyPrev);
+      if (sjItems.length) anyPrev = true;
+
+      html += renderSection(seItems, (item, i) => makeSeCard(item, 'tl-card--quad', `rss-${i}`), 'se', 'SOURCE&nbsp;04&nbsp;/&nbsp;SE&nbsp;e-STORE', anyPrev);
+      if (seItems.length) anyPrev = true;
+
+      html += renderSection(dhItems, (item, i) => makeDengekiCard(item, 'tl-card--quad', `dh-${i}`), 'dh', 'SOURCE&nbsp;05&nbsp;/&nbsp;HOBBY.DENGEKI.COM&nbsp;—&nbsp;電撃ホビーウェブ', anyPrev);
+
+      grid.innerHTML = html;
+
+      // Wire VIEW MORE buttons
+      grid.querySelectorAll('[data-view-more]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const src = btn.getAttribute('data-view-more');
+          grid.querySelectorAll(`[data-more="${src}"]`).forEach(el => {
+            el.removeAttribute('data-more');
+            el.style.display = '';
+          });
+          btn.parentElement.remove();
+          if (window.wireTimelineBookmarks) window.wireTimelineBookmarks();
+          if (window.applyTimelineFilter)   window.applyTimelineFilter();
+        });
+      });
+
+      if (window.wireTimelineBookmarks) window.wireTimelineBookmarks();
+      if (window.applyTimelineFilter)   window.applyTimelineFilter();
+
+      if (kujiItems.length) loadKujiImages(kujiItems);
+    });
+  })();
+</script>
+
+<!-- React + Babel for the Tweaks panel only -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="tweaks.jsx"></script>
+
+</body>
+</html>
