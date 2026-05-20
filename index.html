@@ -403,6 +403,16 @@
     // Expose so RSS loader can wire new bookmark buttons after grid update
     window.wireTimelineBookmarks = function() {
       document.querySelectorAll('.timeline-grid .tl-card__bookmark').forEach(wireBookmarkToggle);
+      document.querySelectorAll('.timeline-grid .tl-card').forEach(card => {
+        if (card.dataset.cardWired) return;
+        card.dataset.cardWired = '1';
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', e => {
+          if (e.target.closest('.tl-card__bookmark')) return;
+          const link = card.querySelector('.tl-card__title a');
+          if (link) link.click();
+        });
+      });
     };
     window.applyTimelineFilter = applyFilter;
 

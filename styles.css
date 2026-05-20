@@ -564,11 +564,11 @@ button {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
 }
 .tl-card__bookmark {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 .tl-card__tags {
   display: flex;
