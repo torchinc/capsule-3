@@ -80,6 +80,7 @@
       <button class="chip" data-tag="kuji">一番くじ</button>
       <button class="chip" data-tag="reissue">再販</button>
       <button class="chip" data-tag="db">ドラゴンボール</button>
+      <button class="chip" data-tag="jojo">ジョジョ</button>
       <button class="chip" data-tag="jump">ジャンプ</button>
       <button class="chip" data-tag="ff">ファイナルファンタジー</button>
       <button class="chip" data-tag="dq">ドラゴンクエスト</button>
@@ -343,7 +344,10 @@
         if (card.hasAttribute('data-more')) return; // leave paginated-hidden items alone
         const tags = (card.getAttribute('data-tags') || '').split(/\s+/);
         const matchTag = (tag === 'all') || tags.includes(tag);
-        const match = bookmarkOnly ? isEntryBookmarked(card) : matchTag;
+        // タグに対応するキーワードでタイトルテキストも照合
+        const titleText = card.querySelector('.tl-card__title, h3')?.textContent || '';
+        const matchKeyword = !matchTag && tag !== 'all' && !!TAG_KEYWORDS[tag]?.test(titleText);
+        const match = bookmarkOnly ? isEntryBookmarked(card) : (matchTag || matchKeyword);
         card.style.display = match ? '' : 'none';
         if (match) visibleCount++;
       });
@@ -456,16 +460,28 @@
       return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
+    // タグごとのキーワード正規表現（タイトルテキストマッチ用）
+    const TAG_KEYWORDS = {
+      figure:  /フィギュア|figure|スタチュー|statue|プラモ|model\s*kit/i,
+      kuji:    /くじ|KUJI/i,
+      reissue: /再販|再受注|reissue/i,
+      db:      /ドラゴンボール|DRAGON\s*BALL|dragon.?ball/i,
+      jojo:    /ジョジョ|JoJo|JOJO|ジョースター|スタンド使い/i,
+      jump:    /ジャンプ|JUMP|少年ジャンプ/i,
+      ff:      /ファイナルファンタジー|FINAL\s*FANTASY|FF\s*[IVX\d]/i,
+      dq:      /ドラゴンクエスト|DRAGON\s*QUEST|DQ\s*\d/i,
+    };
+
     function detectTags(title) {
       const tags = [];
-      if (/ファイナルファンタジー|FINAL FANTASY|FF\s*[IVX\d]/i.test(title)) tags.push('ff');
-      if (/ドラゴンクエスト|DRAGON QUEST|DQ\s*\d/i.test(title))            tags.push('dq');
-      if (/ドラゴンボール|DRAGON BALL|dragon.?ball/i.test(title))           tags.push('db');
-      if (/ジャンプ|JUMP|少年ジャンプ/i.test(title))                        tags.push('jump');
-      if (/フィギュア|figure|スタチュー|statue/i.test(title))               tags.push('figure');
-      if (/プラモ|プラスチックモデル|model kit/i.test(title))               tags.push('figure');
-      if (/くじ|KUJI/i.test(title))                                         tags.push('kuji');
-      if (/再販|再受注|reissue/i.test(title))                               tags.push('reissue');
+      if (TAG_KEYWORDS.ff.test(title))      tags.push('ff');
+      if (TAG_KEYWORDS.dq.test(title))      tags.push('dq');
+      if (TAG_KEYWORDS.db.test(title))      tags.push('db');
+      if (TAG_KEYWORDS.jojo.test(title))    tags.push('jojo');
+      if (TAG_KEYWORDS.jump.test(title))    tags.push('jump');
+      if (TAG_KEYWORDS.figure.test(title))  tags.push('figure');
+      if (TAG_KEYWORDS.kuji.test(title))    tags.push('kuji');
+      if (TAG_KEYWORDS.reissue.test(title)) tags.push('reissue');
       if (tags.length === 0) tags.push('goods');
       return tags.join(' ');
     }
