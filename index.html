@@ -585,7 +585,7 @@
           <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="${bmId}">${BM_SVG}</button>
           <div class="tl-card__body">
             <div class="tl-card__meta">
-              <span class="tl-card__source" style="background:var(--color-accent-warm);color:#fff;padding:1px 6px;border-radius:2px;">1KUJI</span>
+              <span class="tl-card__source" style="background:var(--color-accent-warm);color:#fff;padding:1px 6px;border-radius:2px;">1番くじ公式サイト</span>
               <span>${formatKujiDate(item.date)}</span>
             </div>
             <h3 class="tl-card__title">
@@ -652,7 +652,7 @@
           <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="${bmId}">${BM_SVG}</button>
           <div class="tl-card__body">
             <div class="tl-card__meta">
-              <span class="tl-card__source" style="background:#e85a24;color:#fff;padding:1px 6px;border-radius:2px;">DB&nbsp;OFFICIAL</span>
+              <span class="tl-card__source" style="background:#e85a24;color:#fff;padding:1px 6px;border-radius:2px;">ドラゴンボールオフィシャルサイト</span>
               <span>${formatDbDate(item.date)}</span>
             </div>
             <h3 class="tl-card__title">
@@ -702,7 +702,7 @@
           <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="${bmId}">${BM_SVG}</button>
           <div class="tl-card__body">
             <div class="tl-card__meta">
-              <span class="tl-card__source" style="background:#d00;color:#fff;padding:1px 6px;border-radius:2px;">少年ジャンプ</span>
+              <span class="tl-card__source" style="background:#d00;color:#fff;padding:1px 6px;border-radius:2px;">少年ジャンプ公式サイト</span>
               <span>${formatDbDate(item.date)}</span>
             </div>
             <h3 class="tl-card__title">
@@ -868,9 +868,9 @@
     // ── Combined section helpers ──────────────────────────────
     function getSourceMeta(item) {
       switch (item._type) {
-        case 'kuji': return { label: '1KUJI',           badge: 'background:var(--color-accent-warm);color:#fff;padding:1px 5px;border-radius:2px;' };
-        case 'db':   return { label: 'DB&nbsp;OFFICIAL', badge: 'background:#e85a24;color:#fff;padding:1px 5px;border-radius:2px;' };
-        case 'sj':   return { label: '少年ジャンプ',       badge: 'background:#d00;color:#fff;padding:1px 5px;border-radius:2px;' };
+        case 'kuji': return { label: '1番くじ公式サイト',               badge: 'background:var(--color-accent-warm);color:#fff;padding:1px 5px;border-radius:2px;' };
+        case 'db':   return { label: 'ドラゴンボールオフィシャルサイト', badge: 'background:#e85a24;color:#fff;padding:1px 5px;border-radius:2px;' };
+        case 'sj':   return { label: '少年ジャンプ公式サイト',           badge: 'background:#d00;color:#fff;padding:1px 5px;border-radius:2px;' };
         case 'se':   return { label: 'SE&nbsp;e-STORE',  badge: '' };
         default:     return { label: '',                 badge: '' };
       }
