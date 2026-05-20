@@ -560,6 +560,16 @@ button {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.tl-card__title a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.tl-card__bookmark {
+  position: relative;
+  z-index: 1;
+}
 .tl-card__tags {
   display: flex;
   gap: 6px;
