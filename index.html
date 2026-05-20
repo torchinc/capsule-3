@@ -73,7 +73,7 @@
      ====================================================== -->
 <section class="filter-bar" aria-label="タグフィルター">
   <div class="container filter-bar__inner">
-    <span class="filter-label">Tag&nbsp;/&nbsp;Filter</span>
+    <span class="filter-label" style="display:none;">Tag&nbsp;/&nbsp;Filter</span>
     <div class="chips-scroll">
       <button class="chips-scroll__arrow" id="chips-prev" aria-label="タグを左にスクロール">
         <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -898,7 +898,7 @@
     function renderCombinedSection(combined) {
       if (!combined.length) return '';
       const TS = 'width:100%;height:100%;object-fit:cover;display:block;';
-      let html = sectionDivider('SOURCE&nbsp;01–04&nbsp;/&nbsp;ホビー最新ニュース', false);
+      let html = '';
       const featured  = combined.slice(0, 6);
       const listItems = combined.slice(6);
       const LIST_INIT = 10;
@@ -925,29 +925,31 @@
         </article>`;
       })();
 
-      // Col 2: 2 stacked (items 1–2) ─────────────────────────
-      html += `<div style="display:flex;flex-direction:column;gap:20px;">`;
+      // Col 2: 2 stacked horizontal (items 1–2) ─────────────────
+      html += `<div style="display:flex;flex-direction:column;gap:12px;height:100%;">`;
       [1, 2].forEach(idx => {
         const it = featured[idx]; if (!it) return;
         const sm = getSourceMeta(it);
         const ku = it._type === 'kuji' ? ` id="kuji-media-${it._idx}"` : '';
         const imgUrl = getImgUrl(it);
-        const media = imgUrl
-          ? `<div class="tl-card__media" style="aspect-ratio:16/9;"${ku}><img src="${escapeHtml(imgUrl)}" alt="" style="${TS}" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>${sm.label}</span>';this.parentElement.style.background='';"/></div>`
-          : `<div class="tl-card__media" style="aspect-ratio:16/9;"${ku}><span class="placeholder">${sm.label}</span></div>`;
-        html += `<article class="tl-card" data-tags="${getItemTags(it)}" style="flex:1;">
-          ${media}
-          <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="main-${idx}">${BM_SVG}</button>
-          <div class="tl-card__body">
-            <div class="tl-card__meta"><span class="tl-card__source" style="${sm.badge}">${sm.label}</span><span>${formatAnyDate(it)}</span></div>
-            <h3 class="tl-card__title"><a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escapeHtml(it.title)}</a></h3>
+        const thumb = imgUrl
+          ? `<img src="${escapeHtml(imgUrl)}" alt="" style="width:96px;height:72px;object-fit:cover;border-radius:4px;flex-shrink:0;display:block;" loading="lazy" onerror="this.style.display='none';">`
+          : `<div style="width:96px;height:72px;background:var(--color-bg-base);border-radius:4px;flex-shrink:0;"${ku}></div>`;
+        html += `<article class="tl-card" data-tags="${getItemTags(it)}" style="flex:1;flex-direction:row;gap:12px;padding:12px;align-items:flex-start;">
+          <div style="flex-shrink:0;">${thumb}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:10px;color:var(--color-secondary);margin-bottom:4px;"><span style="${sm.badge}">${sm.label}</span>&ensp;<span>${formatAnyDate(it)}</span></div>
+            <h3 style="font-size:13px;font-weight:700;line-height:1.4;margin:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;">
+              <a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escapeHtml(it.title)}</a>
+            </h3>
           </div>
+          <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="main-${idx}" style="flex-shrink:0;position:relative;z-index:2;">${BM_SVG}</button>
         </article>`;
       });
       html += `</div>`;
 
       // Col 3: 3 mini horizontal (items 3–5) ─────────────────
-      html += `<div style="display:flex;flex-direction:column;gap:12px;">`;
+      html += `<div style="display:flex;flex-direction:column;gap:12px;height:100%;">`;
       [3, 4, 5].forEach(idx => {
         const it = featured[idx]; if (!it) return;
         const sm = getSourceMeta(it);
@@ -956,7 +958,7 @@
         const thumb = imgUrl
           ? `<img src="${escapeHtml(imgUrl)}" alt="" style="width:80px;height:60px;object-fit:cover;border-radius:4px;flex-shrink:0;display:block;" loading="lazy" onerror="this.style.display='none';">`
           : `<div style="width:80px;height:60px;background:var(--color-bg-base);border-radius:4px;flex-shrink:0;"${ku}></div>`;
-        html += `<article class="tl-card" data-tags="${getItemTags(it)}" style="flex-direction:row;gap:10px;padding:10px;align-items:flex-start;">
+        html += `<article class="tl-card" data-tags="${getItemTags(it)}" style="flex:1;flex-direction:row;gap:10px;padding:10px;align-items:flex-start;">
           <div style="flex-shrink:0;">${thumb}</div>
           <div style="flex:1;min-width:0;">
             <div style="font-size:10px;color:var(--color-secondary);margin-bottom:4px;"><span style="${sm.badge}">${sm.label}</span>&ensp;<span>${formatAnyDate(it)}</span></div>
