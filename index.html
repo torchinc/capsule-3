@@ -409,7 +409,7 @@
         card.style.cursor = 'pointer';
         card.addEventListener('click', e => {
           if (e.target.closest('.tl-card__bookmark')) return;
-          const link = card.querySelector('.tl-card__title a');
+          const link = card.querySelector('.tl-card__title a') || card.querySelector('h3 a') || card.querySelector('a[href]');
           if (link) link.click();
         });
       });
@@ -866,6 +866,154 @@
       return isNaN(d) ? 0 : d;
     }
 
+    // ── Combined section helpers ──────────────────────────────
+    function getSourceMeta(item) {
+      switch (item._type) {
+        case 'kuji': return { label: '1KUJI',           badge: 'background:var(--color-accent-warm);color:#fff;padding:1px 5px;border-radius:2px;' };
+        case 'db':   return { label: 'DB&nbsp;OFFICIAL', badge: 'background:#e85a24;color:#fff;padding:1px 5px;border-radius:2px;' };
+        case 'sj':   return { label: '少年ジャンプ',       badge: 'background:#d00;color:#fff;padding:1px 5px;border-radius:2px;' };
+        case 'se':   return { label: 'SE&nbsp;e-STORE',  badge: '' };
+        default:     return { label: '',                 badge: '' };
+      }
+    }
+    function getImgUrl(item) {
+      return item._type !== 'kuji' ? (item.image || null) : null;
+    }
+    function getItemTags(item) {
+      switch (item._type) {
+        case 'kuji': return 'kuji';
+        case 'db':   return 'db';
+        case 'sj':   return 'jump';
+        case 'se':   return detectTags(item.title);
+        default:     return 'goods';
+      }
+    }
+    function formatAnyDate(item) {
+      const s = (item.date || '').trim();
+      if (!s) return '';
+      const m = s.match(/^(\d{4})[-./](\d{2})[-./](\d{2})/);
+      return m ? `${m[2]}.${m[3]}` : s;
+    }
+
+    function renderCombinedSection(combined) {
+      if (!combined.length) return '';
+      const TS = 'width:100%;height:100%;object-fit:cover;display:block;';
+      let html = sectionDivider('SOURCE&nbsp;01–04&nbsp;/&nbsp;ホビー最新ニュース', false);
+      const featured  = combined.slice(0, 6);
+      const listItems = combined.slice(6);
+      const LIST_INIT = 10;
+
+      // ── Top: 3-column featured (6 items) ──────────────────
+      html += `<div style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:32px;">`;
+
+      // Col 1: hero (item 0) ─────────────────────────────────
+      (() => {
+        const it = featured[0]; if (!it) return;
+        const sm = getSourceMeta(it);
+        const ku = it._type === 'kuji' ? ` id="kuji-media-${it._idx}"` : '';
+        const imgUrl = getImgUrl(it);
+        const media = imgUrl
+          ? `<div class="tl-card__media"${ku}><img src="${escapeHtml(imgUrl)}" alt="" style="${TS}" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>${sm.label}</span>';this.parentElement.style.background='';"/></div>`
+          : `<div class="tl-card__media"${ku}><span class="placeholder">${sm.label}</span></div>`;
+        html += `<article class="tl-card" data-tags="${getItemTags(it)}">
+          ${media}
+          <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="main-0">${BM_SVG}</button>
+          <div class="tl-card__body">
+            <div class="tl-card__meta"><span class="tl-card__source" style="${sm.badge}">${sm.label}</span><span>${formatAnyDate(it)}</span></div>
+            <h3 class="tl-card__title"><a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escapeHtml(it.title)}</a></h3>
+          </div>
+        </article>`;
+      })();
+
+      // Col 2: 2 stacked (items 1–2) ─────────────────────────
+      html += `<div style="display:flex;flex-direction:column;gap:20px;">`;
+      [1, 2].forEach(idx => {
+        const it = featured[idx]; if (!it) return;
+        const sm = getSourceMeta(it);
+        const ku = it._type === 'kuji' ? ` id="kuji-media-${it._idx}"` : '';
+        const imgUrl = getImgUrl(it);
+        const media = imgUrl
+          ? `<div class="tl-card__media" style="aspect-ratio:16/9;"${ku}><img src="${escapeHtml(imgUrl)}" alt="" style="${TS}" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>${sm.label}</span>';this.parentElement.style.background='';"/></div>`
+          : `<div class="tl-card__media" style="aspect-ratio:16/9;"${ku}><span class="placeholder">${sm.label}</span></div>`;
+        html += `<article class="tl-card" data-tags="${getItemTags(it)}" style="flex:1;">
+          ${media}
+          <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="main-${idx}">${BM_SVG}</button>
+          <div class="tl-card__body">
+            <div class="tl-card__meta"><span class="tl-card__source" style="${sm.badge}">${sm.label}</span><span>${formatAnyDate(it)}</span></div>
+            <h3 class="tl-card__title"><a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escapeHtml(it.title)}</a></h3>
+          </div>
+        </article>`;
+      });
+      html += `</div>`;
+
+      // Col 3: 3 mini horizontal (items 3–5) ─────────────────
+      html += `<div style="display:flex;flex-direction:column;gap:12px;">`;
+      [3, 4, 5].forEach(idx => {
+        const it = featured[idx]; if (!it) return;
+        const sm = getSourceMeta(it);
+        const ku = it._type === 'kuji' ? ` id="kuji-media-${it._idx}"` : '';
+        const imgUrl = getImgUrl(it);
+        const thumb = imgUrl
+          ? `<img src="${escapeHtml(imgUrl)}" alt="" style="width:80px;height:60px;object-fit:cover;border-radius:4px;flex-shrink:0;display:block;" loading="lazy" onerror="this.style.display='none';">`
+          : `<div style="width:80px;height:60px;background:var(--color-bg-base);border-radius:4px;flex-shrink:0;"${ku}></div>`;
+        html += `<article class="tl-card" data-tags="${getItemTags(it)}" style="flex-direction:row;gap:10px;padding:10px;align-items:flex-start;">
+          <div style="flex-shrink:0;">${thumb}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:10px;color:var(--color-secondary);margin-bottom:4px;"><span style="${sm.badge}">${sm.label}</span>&ensp;<span>${formatAnyDate(it)}</span></div>
+            <h3 style="font-size:12px;font-weight:700;line-height:1.4;margin:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;">
+              <a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escapeHtml(it.title)}</a>
+            </h3>
+          </div>
+          <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="main-${idx}" style="flex-shrink:0;position:relative;z-index:2;">${BM_SVG}</button>
+        </article>`;
+      });
+      html += `</div>`;
+
+      html += `</div>`; // end featured grid
+
+      // ── Bottom: list + sidebar ─────────────────────────────
+      html += `<div style="grid-column:1/-1;display:flex;gap:32px;align-items:flex-start;">`;
+
+      // List (left)
+      html += `<div style="flex:1;min-width:0;">`;
+      listItems.forEach((it, i) => {
+        const sm = getSourceMeta(it);
+        const ku = it._type === 'kuji' ? ` id="kuji-media-${it._idx}"` : '';
+        const imgUrl = getImgUrl(it);
+        const thumb = imgUrl
+          ? `<img src="${escapeHtml(imgUrl)}" alt="" style="width:120px;height:80px;object-fit:cover;border-radius:4px;flex-shrink:0;display:block;" loading="lazy">`
+          : `<div style="width:120px;height:80px;background:var(--color-bg-base);border-radius:4px;flex-shrink:0;"${ku}></div>`;
+        const hidden  = i >= LIST_INIT;
+        const dispStyle = hidden ? 'display:none;' : '';
+        html += `<article class="tl-card" data-tags="${getItemTags(it)}"${hidden ? ' data-more="main"' : ''} style="flex-direction:row;gap:14px;padding:12px 0;background:transparent;box-shadow:none;border-radius:0;border-bottom:1px solid var(--color-border);align-items:flex-start;${dispStyle}">
+          <div style="flex-shrink:0;">${thumb}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:10px;color:var(--color-secondary);margin-bottom:6px;"><span style="${sm.badge}">${sm.label}</span>&ensp;<span>${formatAnyDate(it)}</span></div>
+            <h3 style="font-size:14px;font-weight:700;line-height:1.45;margin:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;">
+              <a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escapeHtml(it.title)}</a>
+            </h3>
+          </div>
+          <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="main-${i + 6}" style="flex-shrink:0;position:relative;z-index:2;">${BM_SVG}</button>
+        </article>`;
+      });
+      if (listItems.length > LIST_INIT) {
+        html += `<div style="text-align:center;padding:24px 0 8px;">
+          <button class="btn btn--ghost" data-view-more="main">VIEW&nbsp;MORE&nbsp;/&nbsp;さらに${listItems.length - LIST_INIT}件表示</button>
+        </div>`;
+      }
+      html += `</div>`;
+
+      // Sidebar (right, 320px)
+      html += `<aside style="flex-shrink:0;width:320px;position:sticky;top:80px;">
+        <div style="width:320px;height:250px;background:#111;border-radius:4px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+          <span style="font-size:10px;color:#444;font-family:monospace;letter-spacing:0.1em;">AD&nbsp;320×250</span>
+        </div>
+      </aside>`;
+
+      html += `</div>`; // end list + sidebar
+      return html;
+    }
+
     // ── Render ────────────────────────────────────────────────
     Promise.allSettled([loadSE(), loadKuji(), loadDragonBall(), loadShonenJump(), loadDengeki()]).then(([seResult, kujiResult, dbResult, sjResult, dhResult]) => {
       const seItems   = seResult.status   === 'fulfilled' ? seResult.value   : [];
@@ -892,15 +1040,7 @@
 
       let html = '';
 
-      html += renderSection(combined, (item, i) => {
-        const bmId = `main-${i}`;
-        switch (item._type) {
-          case 'kuji': return makeKujiCard(item, 'tl-card--quad', bmId, item._idx);
-          case 'db':   return makeDbCard(item, 'tl-card--quad', bmId);
-          case 'sj':   return makeSjCard(item, 'tl-card--quad', bmId);
-          case 'se':   return makeSeCard(item, 'tl-card--quad', bmId);
-        }
-      }, 'main', 'SOURCE&nbsp;01–04&nbsp;/&nbsp;ホビー最新ニュース', false, 10);
+      html += renderCombinedSection(combined);
 
       html += renderSection(dhItems, (item, i) => makeDengekiCard(item, 'tl-card--quad', `dh-${i}`), 'dh', 'SOURCE&nbsp;05&nbsp;/&nbsp;HOBBY.DENGEKI.COM&nbsp;—&nbsp;電撃ホビーウェブ', combined.length > 0);
 
