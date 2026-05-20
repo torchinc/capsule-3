@@ -1414,6 +1414,20 @@ html[data-card-mood="outlined"] .tl-card__bookmark {
   .affiliate__price, .affiliate__cta { grid-column: 2; }
 }
 
+/* ── Loading spinner ────────────────────────────────────── */
+.tl-spinner {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-accent-warm);
+  border-radius: 50%;
+  animation: tl-spin 0.7s linear infinite;
+}
+@keyframes tl-spin {
+  to { transform: rotate(360deg); }
+}
+
 /* ── Combined feature + list layout ─────────────────────── */
 .combined-featured {
   grid-column: 1 / -1;
