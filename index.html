@@ -847,15 +847,23 @@
       </div>`;
     }
 
-    function renderSection(items, makeCard, src, label, addBorder) {
+    function renderSection(items, makeCard, src, label, addBorder, initialCount = INITIAL) {
       if (!items.length) return '';
       let h = sectionDivider(label, addBorder);
       items.forEach((item, i) => {
         const card = makeCard(item, i);
-        h += i < INITIAL ? card : hideExtra(card, src);
+        h += i < initialCount ? card : hideExtra(card, src);
       });
-      h += viewMoreBtn(src, Math.max(0, items.length - INITIAL));
+      h += viewMoreBtn(src, Math.max(0, items.length - initialCount));
       return h;
+    }
+
+    function parseItemDate(item) {
+      const str = item.date || '';
+      if (!str) return 0;
+      const norm = str.replace(/\./g, '-').replace(/\//g, '-');
+      const d = Date.parse(norm);
+      return isNaN(d) ? 0 : d;
     }
 
     // ── Render ────────────────────────────────────────────────
@@ -874,22 +882,27 @@
         return;
       }
 
-      let anyPrev = false;
+      // Combine 4 sources, sort newest first
+      const kujiTagged = kujiItems.map((item, i) => ({ ...item, _type: 'kuji', _idx: i }));
+      const dbTagged   = dbItems.map(item => ({ ...item, _type: 'db' }));
+      const sjTagged   = sjItems.map(item => ({ ...item, _type: 'sj' }));
+      const seTagged   = seItems.map(item => ({ ...item, _type: 'se' }));
+      const combined   = [...kujiTagged, ...dbTagged, ...sjTagged, ...seTagged]
+        .sort((a, b) => parseItemDate(b) - parseItemDate(a));
+
       let html = '';
 
-      html += renderSection(kujiItems, (item, i) => makeKujiCard(item, 'tl-card--quad', `kuji-${i}`, i), 'kuji', 'SOURCE&nbsp;01&nbsp;/&nbsp;1KUJI.COM&nbsp;—&nbsp;一番くじ公式', false);
-      if (kujiItems.length) anyPrev = true;
+      html += renderSection(combined, (item, i) => {
+        const bmId = `main-${i}`;
+        switch (item._type) {
+          case 'kuji': return makeKujiCard(item, 'tl-card--quad', bmId, item._idx);
+          case 'db':   return makeDbCard(item, 'tl-card--quad', bmId);
+          case 'sj':   return makeSjCard(item, 'tl-card--quad', bmId);
+          case 'se':   return makeSeCard(item, 'tl-card--quad', bmId);
+        }
+      }, 'main', 'SOURCE&nbsp;01–04&nbsp;/&nbsp;ホビー最新ニュース', false, 10);
 
-      html += renderSection(dbItems, (item, i) => makeDbCard(item, 'tl-card--quad', `db-${i}`), 'db', 'SOURCE&nbsp;02&nbsp;/&nbsp;DRAGON-BALL-OFFICIAL.COM', anyPrev);
-      if (dbItems.length) anyPrev = true;
-
-      html += renderSection(sjItems, (item, i) => makeSjCard(item, 'tl-card--quad', `sj-${i}`), 'sj', 'SOURCE&nbsp;03&nbsp;/&nbsp;SHONENJUMP.COM&nbsp;—&nbsp;グッズ情報', anyPrev);
-      if (sjItems.length) anyPrev = true;
-
-      html += renderSection(seItems, (item, i) => makeSeCard(item, 'tl-card--quad', `rss-${i}`), 'se', 'SOURCE&nbsp;04&nbsp;/&nbsp;SE&nbsp;e-STORE', anyPrev);
-      if (seItems.length) anyPrev = true;
-
-      html += renderSection(dhItems, (item, i) => makeDengekiCard(item, 'tl-card--quad', `dh-${i}`), 'dh', 'SOURCE&nbsp;05&nbsp;/&nbsp;HOBBY.DENGEKI.COM&nbsp;—&nbsp;電撃ホビーウェブ', anyPrev);
+      html += renderSection(dhItems, (item, i) => makeDengekiCard(item, 'tl-card--quad', `dh-${i}`), 'dh', 'SOURCE&nbsp;05&nbsp;/&nbsp;HOBBY.DENGEKI.COM&nbsp;—&nbsp;電撃ホビーウェブ', combined.length > 0);
 
       grid.innerHTML = html;
 
