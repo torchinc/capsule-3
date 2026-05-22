@@ -335,7 +335,7 @@
         const matchTag = (tag === 'all') || tags.includes(tag);
         // タグに対応するキーワードでタイトルテキストも照合
         const titleText = card.querySelector('.tl-card__title, h3')?.textContent || '';
-        const matchKeyword = !matchTag && tag !== 'all' && !!TAG_KEYWORDS[tag]?.test(titleText);
+        const matchKeyword = !matchTag && tag !== 'all' && !!(window.TAG_KEYWORDS?.[tag])?.test(titleText);
         const match = bookmarkOnly ? isEntryBookmarked(card) : (matchTag || matchKeyword);
         card.style.display = match ? '' : 'none';
         if (match) visibleCount++;
@@ -419,7 +419,14 @@
       e.preventDefault();
       bookmarkOnly = !bookmarkOnly;
       bookmarkLink.classList.toggle('is-active', bookmarkOnly);
+      const grid = document.getElementById('timeline-grid');
+      if (grid) grid.classList.toggle('bm-view', bookmarkOnly);
       if (bookmarkOnly) {
+        // Move bookmark button to end of each card so it always appears on the right
+        document.querySelectorAll('#timeline-grid .tl-card').forEach(card => {
+          const btn = card.querySelector(':scope > .tl-card__bookmark');
+          if (btn) card.appendChild(btn);
+        });
         chips.forEach(c => c.classList.remove('chip--active'));
         const tl = document.getElementById('timeline');
         if (tl) {
@@ -441,6 +448,7 @@
   // ── Multi-source timeline loader (SE e-STORE + 一番くじ) ──────
   (function() {
     const PROXY  = 'https://api.codetabs.com/v1/proxy?quest=';
+    window._PROXY = PROXY; // expose for inline onerror handlers
     const grid   = document.getElementById('timeline-grid');
     const BM_SVG = '<svg viewBox="0 0 12 14" fill="currentColor"><path d="M0 0h12v14L6 10 0 14z"/></svg>';
 
@@ -449,8 +457,8 @@
       return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
-    // タグごとのキーワード正規表現（タイトルテキストマッチ用）
-    const TAG_KEYWORDS = {
+    // タグごとのキーワード正規表現（タイトルテキストマッチ用）— グローバルに公開してフィルターIIFEと共有
+    const TAG_KEYWORDS = window.TAG_KEYWORDS = {
       figure:  /フィギュア|figure|スタチュー|statue|プラモ|model\s*kit/i,
       kuji:    /くじ|KUJI/i,
       reissue: /再販|再受注|reissue/i,
@@ -488,10 +496,28 @@
 
     // ── SE e-STORE helpers ────────────────────────────────────
     function getSeImageUrl(link) {
-      const m = link.match(/\/item\/([^/.]+)\.html/);
-      if (!m) return null;
-      return `https://store.jp.square-enix.com/client_info/SQEX_ESTORE/itemimage/${m[1]}/ITEM_IMAGE1.jpg`;
+      // Product page: /item/ITEM_ID.html
+      const itemM = link.match(/\/item\/([^/.?]+)/);
+      if (itemM) return `https://store.jp.square-enix.com/client_info/SQEX_ESTORE/itemimage/${itemM[1]}/ITEM_IMAGE1.jpg`;
+      // Category page: /category/CAT_ID/
+      const catM = link.match(/\/category\/([^/?]+)/);
+      if (catM)  return `https://store.jp.square-enix.com/client_info/SQEX_ESTORE/itemimage/${catM[1]}/ITEM_IMAGE1.jpg`;
+      return null;
     }
+    // Fetch OG image from page when constructed URL fails
+    window.fetchSeOgImage = function(imgEl, link) {
+      const proxy = window._PROXY || '';
+      fetch(proxy + encodeURIComponent(link))
+        .then(r => r.text())
+        .then(html => {
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const og  = doc.querySelector('meta[property="og:image"]')?.getAttribute('content')
+                   || doc.querySelector('meta[name="twitter:image"]')?.getAttribute('content')
+                   || doc.querySelector('.product-image img, .item-image img')?.getAttribute('src');
+          if (og) { imgEl.src = og; } else { imgEl.style.display = 'none'; }
+        })
+        .catch(() => { imgEl.style.display = 'none'; });
+    };
 
     function makeSeMedia(link, label) {
       const imgUrl = getSeImageUrl(link);
@@ -507,11 +533,11 @@
       const tags = detectTags(item.title);
       return `
         <article class="tl-card ${variantClass}" data-tags="${tags}">
-          ${makeSeMedia(item.link, 'SE&nbsp;e-STORE')}
+          ${makeSeMedia(item.link, 'スクウェア・エニックス e-STORE')}
           <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="${bmId}">${BM_SVG}</button>
           <div class="tl-card__body">
             <div class="tl-card__meta">
-              <span class="tl-card__source">SE&nbsp;e-STORE</span>
+              <span class="tl-card__source" style="color:#7B4FBF;font-weight:700;">スクウェア・エニックス e-STORE</span>
               <span>${formatIsoDate(item.date)}</span>
             </div>
             <h3 class="tl-card__title">
@@ -524,11 +550,11 @@
     function makeSeHero(item, bmId) {
       return `
         <article class="tl-card tl-card--hero" data-tags="${detectTags(item.title)}">
-          ${makeSeMedia(item.link, 'SE&nbsp;e-STORE&nbsp;—&nbsp;LATEST')}
+          ${makeSeMedia(item.link, 'スクウェア・エニックス e-STORE&nbsp;—&nbsp;LATEST')}
           <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="${bmId}">${BM_SVG}</button>
           <div class="tl-card__body"><div>
             <div class="tl-card__meta">
-              <span class="tl-card__source">SE&nbsp;e-STORE</span>
+              <span class="tl-card__source" style="color:#7B4FBF;font-weight:700;">スクウェア・エニックス e-STORE</span>
               <span>${formatIsoDate(item.date)}</span>
             </div>
             <h3 class="tl-card__title">
@@ -542,11 +568,11 @@
       return `
         <div class="side-stack" data-stack="true">
           <article class="tl-card" data-tags="${detectTags(item1.title)}">
-            ${makeSeMedia(item1.link, 'SE&nbsp;e-STORE')}
+            ${makeSeMedia(item1.link, 'スクウェア・エニックス e-STORE')}
             <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="rss-s1">${BM_SVG}</button>
             <div class="tl-card__body">
               <div class="tl-card__meta">
-                <span class="tl-card__source">SE&nbsp;e-STORE</span>
+                <span class="tl-card__source" style="color:#7B4FBF;font-weight:700;">スクウェア・エニックス e-STORE</span>
                 <span>${formatIsoDate(item1.date)}</span>
               </div>
               <h3 class="tl-card__title">
@@ -555,11 +581,11 @@
             </div>
           </article>
           <article class="tl-card" data-tags="${detectTags(item2.title)}">
-            ${makeSeMedia(item2.link, 'SE&nbsp;e-STORE')}
+            ${makeSeMedia(item2.link, 'スクウェア・エニックス e-STORE')}
             <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="rss-s2">${BM_SVG}</button>
             <div class="tl-card__body">
               <div class="tl-card__meta">
-                <span class="tl-card__source">SE&nbsp;e-STORE</span>
+                <span class="tl-card__source" style="color:#7B4FBF;font-weight:700;">スクウェア・エニックス e-STORE</span>
                 <span>${formatIsoDate(item2.date)}</span>
               </div>
               <h3 class="tl-card__title">
@@ -585,7 +611,7 @@
           <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="${bmId}">${BM_SVG}</button>
           <div class="tl-card__body">
             <div class="tl-card__meta">
-              <span class="tl-card__source" style="color:#4dd9ac;font-weight:700;">1番くじ公式サイト</span>
+              <span class="tl-card__source" style="color:#317B8F;font-weight:700;">1番くじ公式サイト</span>
               <span>${formatKujiDate(item.date)}</span>
             </div>
             <h3 class="tl-card__title">
@@ -601,13 +627,23 @@
       return fetch(PROXY + encodeURIComponent(RSS_URL))
         .then(r => r.text())
         .then(data => {
-          const xml   = new DOMParser().parseFromString(data, 'text/xml');
-          const DC_NS = 'http://purl.org/dc/elements/1.1/';
-          return Array.from(xml.querySelectorAll('item')).slice(0, 12).map(el => ({
-            title: el.querySelector('title')?.textContent?.trim() || '(タイトルなし)',
-            link:  el.querySelector('link')?.textContent?.trim()  || '#',
-            date:  el.getElementsByTagNameNS(DC_NS, 'date')[0]?.textContent?.trim() || '',
-          }));
+          const xml    = new DOMParser().parseFromString(data, 'text/xml');
+          const DC_NS  = 'http://purl.org/dc/elements/1.1/';
+          const MEDIA_NS = 'http://search.yahoo.com/mrss/';
+          return Array.from(xml.querySelectorAll('item')).slice(0, 12).map(el => {
+            const link = el.querySelector('link')?.textContent?.trim() || '#';
+            // Try to get image: enclosure → media:thumbnail → media:content → constructed
+            const enclosure   = el.querySelector('enclosure[type^="image"]')?.getAttribute('url');
+            const mediaThumbs = el.getElementsByTagNameNS(MEDIA_NS, 'thumbnail')[0]?.getAttribute('url');
+            const mediaContent= el.getElementsByTagNameNS(MEDIA_NS, 'content')[0]?.getAttribute('url');
+            const image = enclosure || mediaThumbs || mediaContent || getSeImageUrl(link) || null;
+            return {
+              title: el.querySelector('title')?.textContent?.trim() || '(タイトルなし)',
+              link,
+              date:  el.getElementsByTagNameNS(DC_NS, 'date')[0]?.textContent?.trim() || '',
+              image,
+            };
+          });
         });
     }
 
@@ -743,9 +779,9 @@
     function makeDengekiCard(item, variantClass, bmId) {
       const mediaHtml = item.image
         ? `<div class="tl-card__media" style="background:#111;">
-            <img src="${escapeHtml(item.image)}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>電撃HOBBY</span>'; this.parentElement.style.background='';" />
+            <img src="${escapeHtml(item.image)}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>電撃ホビーウェブ</span>'; this.parentElement.style.background='';" />
           </div>`
-        : `<div class="tl-card__media"><span class="placeholder">電撃HOBBY</span></div>`;
+        : `<div class="tl-card__media"><span class="placeholder">電撃ホビーウェブ</span></div>`;
       const dateParts = (item.date || '').split('.');
       const dateStr = dateParts.length >= 3 ? `${dateParts[1]}.${dateParts[2]}` : item.date;
       return `
@@ -754,7 +790,7 @@
           <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="${bmId}">${BM_SVG}</button>
           <div class="tl-card__body">
             <div class="tl-card__meta">
-              <span class="tl-card__source" style="background:#333;color:#fff;padding:1px 6px;border-radius:2px;">電撃HOBBY</span>
+              <span style="font-weight:700;color:#d00;">電撃ホビーウェブ</span>
               <span>${dateStr}</span>
             </div>
             <h3 class="tl-card__title">
@@ -809,7 +845,15 @@
             .then(pageHtml => {
               clearTimeout(timer);
               const pageDoc = new DOMParser().parseFromString(pageHtml, 'text/html');
-              const img = pageDoc.querySelector('.imgCol img');
+              // Find topic image: prefer assets.1kuji.com/uploads, fallback to first non-UI img
+              const allImgs = Array.from(pageDoc.querySelectorAll('img'));
+              const img = allImgs.find(i => {
+                const s = i.getAttribute('src') || '';
+                return s.includes('assets.1kuji.com') || s.includes('/uploads/topic/');
+              }) || allImgs.find(i => {
+                const s = i.getAttribute('src') || '';
+                return s && !s.includes('/images/common/') && !s.includes('logo_') && !s.includes('ico_') && !s.includes('btn_');
+              });
               const src = img ? img.getAttribute('src') : null;
               const url = src && src.startsWith('/') ? 'https://1kuji.com' + src : src;
               if (!url) return;
@@ -830,7 +874,7 @@
 
     function sectionDivider(label, addBorder) {
       const border = addBorder ? 'border-top:1px solid var(--color-border);margin-top:16px;' : '';
-      return `<div style="grid-column:1/-1;padding:${addBorder ? '32px' : '0'} 0 8px;${border}">
+      return `<div class="section-divider" style="grid-column:1/-1;padding:${addBorder ? '32px' : '0'} 0 8px;${border}">
         <span style="${MONO}">${label}</span>
       </div>`;
     }
@@ -842,7 +886,7 @@
     function viewMoreBtn(src, extra) {
       if (extra <= 0) return '';
       return `<div style="grid-column:1/-1;text-align:center;padding:24px 0 8px;">
-        <button class="btn btn--ghost" data-view-more="${src}">VIEW&nbsp;MORE&nbsp;/&nbsp;さらに${extra}件表示</button>
+        <button class="btn btn--ghost" data-view-more="${src}">VIEW&nbsp;MORE</button>
       </div>`;
     }
 
@@ -868,15 +912,16 @@
     // ── Combined section helpers ──────────────────────────────
     function getSourceMeta(item) {
       switch (item._type) {
-        case 'kuji': return { label: '1番くじ公式サイト',               badge: 'color:#4dd9ac;font-weight:700;' };
+        case 'kuji': return { label: '1番くじ公式サイト',               badge: 'color:#317B8F;font-weight:700;' };
         case 'db':   return { label: 'ドラゴンボールオフィシャルサイト', badge: 'color:#e85a24;font-weight:700;' };
         case 'sj':   return { label: '少年ジャンプ公式サイト',           badge: 'color:#d00;font-weight:700;' };
-        case 'se':   return { label: 'SE&nbsp;e-STORE',  badge: '' };
+        case 'se':   return { label: 'スクウェア・エニックス e-STORE',  badge: 'color:#7B4FBF;font-weight:700;' };
         default:     return { label: '',                 badge: '' };
       }
     }
     function getImgUrl(item) {
-      return item._type !== 'kuji' ? (item.image || null) : null;
+      if (item._type === 'kuji') return null;
+      return item.image || null;
     }
     function getItemTags(item) {
       switch (item._type) {
@@ -892,6 +937,13 @@
       if (!s) return '';
       const m = s.match(/^(\d{4})[-./](\d{2})[-./](\d{2})/);
       return m ? `${m[2]}.${m[3]}` : s;
+    }
+
+    // Build onerror attribute string for SE images
+    function seErrAttr(item) {
+      if (item._type !== 'se') return `onerror="this.style.display='none';"`;
+      const escaped = escapeHtml(item.link).replace(/'/g, '&#39;');
+      return `onerror="fetchSeOgImage(this,'${escaped}')"`;
     }
 
     function renderCombinedSection(combined) {
@@ -911,14 +963,15 @@
         const sm = getSourceMeta(it);
         const ku = it._type === 'kuji' ? ` id="kuji-media-${it._idx}"` : '';
         const imgUrl = getImgUrl(it);
+        const errAttr = seErrAttr(it);
         const media = imgUrl
-          ? `<div class="tl-card__media" style="aspect-ratio:16/9;"${ku}><img src="${escapeHtml(imgUrl)}" alt="" style="${TS}" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>${sm.label}</span>';this.parentElement.style.background='';"/></div>`
+          ? `<div class="tl-card__media" style="aspect-ratio:16/9;"${ku}><img src="${escapeHtml(imgUrl)}" alt="" style="${TS}" loading="lazy" ${errAttr}/></div>`
           : `<div class="tl-card__media" style="aspect-ratio:16/9;"${ku}><span class="placeholder">${sm.label}</span></div>`;
         html += `<article class="tl-card" data-tags="${getItemTags(it)}">
           ${media}
           <button class="tl-card__bookmark" aria-label="ブックマーク" data-bm="main-0">${BM_SVG}</button>
           <div class="tl-card__body">
-            <div class="tl-card__meta"><span class="tl-card__source" style="${sm.badge}">${sm.label}</span><span>${formatAnyDate(it)}</span></div>
+            <div class="tl-card__meta"><span style="${sm.badge}">${sm.label}</span><span>${formatAnyDate(it)}</span></div>
             <h3 class="tl-card__title"><a href="${escapeHtml(it.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escapeHtml(it.title)}</a></h3>
           </div>
         </article>`;
@@ -931,8 +984,9 @@
         const sm = getSourceMeta(it);
         const ku = it._type === 'kuji' ? ` id="kuji-media-${it._idx}"` : '';
         const imgUrl = getImgUrl(it);
+        const errAttr = seErrAttr(it);
         const thumbInner = imgUrl
-          ? `<img src="${escapeHtml(imgUrl)}" alt="" style="${TS}" loading="lazy" onerror="this.style.display='none';">`
+          ? `<img src="${escapeHtml(imgUrl)}" alt="" style="${TS}" loading="lazy" ${errAttr}>`
           : `<span class="placeholder" style="font-size:8px;">${sm.label}</span>`;
         html += `<article class="tl-card" data-tags="${getItemTags(it)}" style="flex:1;flex-direction:row;gap:12px;padding:12px;align-items:flex-start;">
           <div class="stack-thumb"${ku}>${thumbInner}</div>
@@ -954,8 +1008,9 @@
         const sm = getSourceMeta(it);
         const ku = it._type === 'kuji' ? ` id="kuji-media-${it._idx}"` : '';
         const imgUrl = getImgUrl(it);
+        const errAttr = seErrAttr(it);
         const thumbInner = imgUrl
-          ? `<img src="${escapeHtml(imgUrl)}" alt="" style="${TS}" loading="lazy" onerror="this.style.display='none';">`
+          ? `<img src="${escapeHtml(imgUrl)}" alt="" style="${TS}" loading="lazy" ${errAttr}>`
           : `<span class="placeholder" style="font-size:8px;">${sm.label}</span>`;
         html += `<article class="tl-card" data-tags="${getItemTags(it)}" style="flex:1;flex-direction:row;gap:10px;padding:10px;align-items:flex-start;">
           <div class="mini-thumb"${ku}>${thumbInner}</div>
@@ -981,8 +1036,9 @@
         const sm = getSourceMeta(it);
         const ku = it._type === 'kuji' ? ` id="kuji-media-${it._idx}"` : '';
         const imgUrl = getImgUrl(it);
+        const errAttr = seErrAttr(it);
         const thumbInner = imgUrl
-          ? `<img src="${escapeHtml(imgUrl)}" alt="" style="${TS}" loading="lazy">`
+          ? `<img src="${escapeHtml(imgUrl)}" alt="" style="${TS}" loading="lazy" ${errAttr}>`
           : `<span class="placeholder" style="font-size:8px;">${sm.label}</span>`;
         const hidden = i >= LIST_INIT;
         html += `<article class="tl-card" data-tags="${getItemTags(it)}"${hidden ? ' data-more="main"' : ''} style="flex-direction:row;gap:14px;padding:12px 0;background:transparent;box-shadow:none;border-radius:0;border-bottom:1px solid var(--color-border);align-items:flex-start;${hidden ? 'display:none;' : ''}">
@@ -998,7 +1054,7 @@
       });
       if (listItems.length > LIST_INIT) {
         html += `<div style="text-align:center;padding:24px 0 8px;">
-          <button class="btn btn--ghost" data-view-more="main">VIEW&nbsp;MORE&nbsp;/&nbsp;さらに${listItems.length - LIST_INIT}件表示</button>
+          <button class="btn btn--ghost" data-view-more="main">VIEW&nbsp;MORE</button>
         </div>`;
       }
       html += `</div>`;
@@ -1046,15 +1102,21 @@
 
       grid.innerHTML = html;
 
-      // Wire VIEW MORE buttons
+      // Wire VIEW MORE buttons — 20 items per click
+      const VIEW_MORE_BATCH = 20;
       grid.querySelectorAll('[data-view-more]').forEach(btn => {
         btn.addEventListener('click', () => {
           const src = btn.getAttribute('data-view-more');
-          grid.querySelectorAll(`[data-more="${src}"]`).forEach(el => {
+          const hidden = Array.from(grid.querySelectorAll(`[data-more="${src}"]`));
+          // Show next batch
+          hidden.slice(0, VIEW_MORE_BATCH).forEach(el => {
             el.removeAttribute('data-more');
             el.style.display = '';
           });
-          btn.parentElement.remove();
+          const remaining = hidden.length - VIEW_MORE_BATCH;
+          if (remaining <= 0) {
+            btn.parentElement.remove();
+          }
           if (window.wireTimelineBookmarks) window.wireTimelineBookmarks();
           if (window.applyTimelineFilter)   window.applyTimelineFilter();
         });
