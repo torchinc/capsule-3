@@ -115,96 +115,14 @@
   <div class="container">
     <header class="section__header">
       <span class="section__num">— 02</span>
-      <h2 class="section__title" style="font-size: 28px">MAGAZINE</h2>
-      <a class="section__more" href="article.html">READ&nbsp;ARCHIVE&nbsp;→</a>
+      <h2 class="section__title" style="font-size: 28px">note</h2>
+      <a class="section__more" href="https://note.com/age749" target="_blank" rel="noopener">NOTE&nbsp;へ&nbsp;→</a>
     </header>
 
-    <div class="ed-grid">
-
-      <article class="ed-feature" data-ed-bm>
-        <button class="tl-card__bookmark ed-feature__bm" data-bm="ed-feat" aria-label="ブックマーク">
-          <svg viewBox="0 0 12 14" fill="currentColor"><path d="M0 0h12v14L6 10 0 14z"/></svg>
-        </button>
-        <a href="article.html" style="color:inherit; text-decoration:none;">
-          <div class="ed-feature__media">
-            <span class="placeholder">FEATURE&nbsp;IMAGE&nbsp;—&nbsp;16:9</span>
-          </div>
-        </a>
-        <div class="ed-feature__kicker">DEEP&nbsp;DIVE&nbsp;/&nbsp;造形美の系譜</div>
-        <h3 class="ed-feature__title">
-          <a href="article.html" style="color:inherit; text-decoration:none;">布の落ち感、塗装の深度。<br />大人の鑑賞に耐えうる造形美の、現在地。</a>
-        </h3>
-        <p class="ed-feature__excerpt">2000年代初頭、コレクター向けに開花した「ハイブランド・フィギュア」は、いまや美術品の領域に達した。素材選定、原型師の系譜、そして大人が部屋に飾るときの"間"の取り方まで——編集部が30名の造形師と11社の取材から導いた、現代造形の見取り図。</p>
-        <div class="ed-feature__meta">
-          <span>EDITORIAL&nbsp;/&nbsp;ISSUE&nbsp;04</span>
-          <span>2026.05.18</span>
-          <span>READ&nbsp;TIME&nbsp;12&nbsp;MIN</span>
-        </div>
-      </article>
-
-      <div class="ed-list">
-        <article class="ed-row" data-ed-bm>
-          <a href="article.html" style="display:contents;">
-            <div class="ed-row__media"><span class="placeholder">IMG</span></div>
-          </a>
-          <div>
-            <div class="ed-row__kicker">DISPLAY&nbsp;TIPS</div>
-            <h4 class="ed-row__title"><a href="article.html" style="color:inherit; text-decoration:none;">無印的な部屋に、フィギュアを置く。境界線としての「台座」の使い方。</a></h4>
-            <div class="ed-row__footer">
-              <span class="ed-row__meta">05.17&nbsp;/&nbsp;READ&nbsp;8&nbsp;MIN</span>
-              <button class="ed-bm" aria-label="ブックマーク">
-                <svg viewBox="0 0 12 14"><path d="M0 0h12v14L6 10 0 14z"/></svg>
-              </button>
-            </div>
-          </div>
-        </article>
-        <article class="ed-row" data-ed-bm>
-          <a href="article.html" style="display:contents;">
-            <div class="ed-row__media"><span class="placeholder">IMG</span></div>
-          </a>
-          <div>
-            <div class="ed-row__kicker">HISTORY</div>
-            <h4 class="ed-row__title"><a href="article.html" style="color:inherit; text-decoration:none;">原型師という職能の25年史。フィギュア黎明期から現代までの転換点。</a></h4>
-            <div class="ed-row__footer">
-              <span class="ed-row__meta">05.14&nbsp;/&nbsp;READ&nbsp;15&nbsp;MIN</span>
-              <button class="ed-bm" aria-label="ブックマーク">
-                <svg viewBox="0 0 12 14"><path d="M0 0h12v14L6 10 0 14z"/></svg>
-              </button>
-            </div>
-          </div>
-        </article>
-        <article class="ed-row" data-ed-bm>
-          <a href="article.html" style="display:contents;">
-            <div class="ed-row__media"><span class="placeholder">IMG</span></div>
-          </a>
-          <div>
-            <div class="ed-row__kicker">COLUMN</div>
-            <h4 class="ed-row__title"><a href="article.html" style="color:inherit; text-decoration:none;">「あの夏のパーティ」を部屋に再現する。RPGディスプレイ実践譜。</a></h4>
-            <div class="ed-row__footer">
-              <span class="ed-row__meta">05.10&nbsp;/&nbsp;READ&nbsp;6&nbsp;MIN</span>
-              <button class="ed-bm" aria-label="ブックマーク">
-                <svg viewBox="0 0 12 14"><path d="M0 0h12v14L6 10 0 14z"/></svg>
-              </button>
-            </div>
-          </div>
-        </article>
-        <article class="ed-row" data-ed-bm>
-          <a href="article.html" style="display:contents;">
-            <div class="ed-row__media"><span class="placeholder">IMG</span></div>
-          </a>
-          <div>
-            <div class="ed-row__kicker">INTERVIEW</div>
-            <h4 class="ed-row__title"><a href="article.html" style="color:inherit; text-decoration:none;">「単なる商品ではない」造形監督A氏に聞く、立体化が止まる瞬間。</a></h4>
-            <div class="ed-row__footer">
-              <span class="ed-row__meta">05.07&nbsp;/&nbsp;READ&nbsp;11&nbsp;MIN</span>
-              <button class="ed-bm" aria-label="ブックマーク">
-                <svg viewBox="0 0 12 14"><path d="M0 0h12v14L6 10 0 14z"/></svg>
-              </button>
-            </div>
-          </div>
-        </article>
+    <div class="ed-grid" id="note-grid">
+      <div style="grid-column:1/-1;padding:60px 0;text-align:center;">
+        <div class="tl-spinner"></div>
       </div>
-
     </div>
   </div>
 </section>
@@ -387,6 +305,9 @@
       });
     }
 
+    // Expose wireBookmarkToggle so other loaders (note etc.) can wire dynamic buttons
+    window.wireBookmarkToggle = wireBookmarkToggle;
+
     // Expose so RSS loader can wire new bookmark buttons after grid update
     window.wireTimelineBookmarks = function() {
       document.querySelectorAll('.timeline-grid .tl-card__bookmark').forEach(wireBookmarkToggle);
@@ -450,6 +371,27 @@
     const PROXY  = 'https://api.codetabs.com/v1/proxy?quest=';
     window._PROXY = PROXY; // expose for inline onerror handlers
     const grid   = document.getElementById('timeline-grid');
+
+    // ── localStorage cache helpers ─────────────────────────────
+    const CACHE_KEY     = 'c3_news_v1';
+    const CACHE_IMG_KEY = 'c3_kuji_imgs_v1';
+    const CACHE_FRESH   = 20 * 60 * 1000; // 20 min: render instantly, refresh silently
+    const CACHE_STALE   = 60 * 60 * 1000; // 60 min: show stale immediately + re-fetch
+
+    function cacheRead() {
+      try {
+        const c = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+        if (!c || Date.now() - c.ts > CACHE_STALE) return null;
+        return c;
+      } catch(e) { return null; }
+    }
+    function cacheWrite(se, kuji, db, sj, dh) {
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), se, kuji, db, sj, dh }));
+      } catch(e) {}
+    }
+    function kujiImgRead()        { try { return JSON.parse(localStorage.getItem(CACHE_IMG_KEY) || '{}'); } catch(e) { return {}; } }
+    function kujiImgWrite(map)    { try { localStorage.setItem(CACHE_IMG_KEY, JSON.stringify(map)); } catch(e) {} }
     const BM_SVG = '<svg viewBox="0 0 12 14" fill="currentColor"><path d="M0 0h12v14L6 10 0 14z"/></svg>';
 
     // ── Shared utilities ──────────────────────────────────────
@@ -835,8 +777,29 @@
     }
 
     // After render: fetch each kuji topic page for its main image (background, non-blocking)
+    // Uses localStorage cache for image URLs — cached items render instantly with no fetch
     function loadKujiImages(items) {
+      const imgCache = kujiImgRead();
+      const newCache = { ...imgCache };
+      let staggerIdx = 0; // only stagger uncached fetches
+
+      function applyImg(idx, url) {
+        const mediaEl = document.getElementById(`kuji-media-${idx}`);
+        if (mediaEl) {
+          mediaEl.style.background = 'var(--color-bg-base)';
+          mediaEl.innerHTML = `<img src="${escapeHtml(url)}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>一番くじ</span>'; this.parentElement.style.background='';" />`;
+        }
+      }
+
       items.forEach((item, i) => {
+        // Cache hit: apply immediately, no fetch needed
+        if (imgCache[item.link]) {
+          applyImg(i, imgCache[item.link]);
+          return;
+        }
+        // Cache miss: fetch with staggered delay (150ms per uncached item)
+        const delay = staggerIdx * 150;
+        staggerIdx++;
         setTimeout(() => {
           const ctrl = new AbortController();
           const timer = setTimeout(() => ctrl.abort(), 9000);
@@ -845,26 +808,23 @@
             .then(pageHtml => {
               clearTimeout(timer);
               const pageDoc = new DOMParser().parseFromString(pageHtml, 'text/html');
-              // Find topic image: prefer assets.1kuji.com/uploads, fallback to first non-UI img
               const allImgs = Array.from(pageDoc.querySelectorAll('img'));
-              const img = allImgs.find(i => {
-                const s = i.getAttribute('src') || '';
+              const img = allImgs.find(el => {
+                const s = el.getAttribute('src') || '';
                 return s.includes('assets.1kuji.com') || s.includes('/uploads/topic/');
-              }) || allImgs.find(i => {
-                const s = i.getAttribute('src') || '';
+              }) || allImgs.find(el => {
+                const s = el.getAttribute('src') || '';
                 return s && !s.includes('/images/common/') && !s.includes('logo_') && !s.includes('ico_') && !s.includes('btn_');
               });
               const src = img ? img.getAttribute('src') : null;
               const url = src && src.startsWith('/') ? 'https://1kuji.com' + src : src;
               if (!url) return;
-              const mediaEl = document.getElementById(`kuji-media-${i}`);
-              if (mediaEl) {
-                mediaEl.style.background = 'var(--color-bg-base)';
-                mediaEl.innerHTML = `<img src="${escapeHtml(url)}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>一番くじ</span>'; this.parentElement.style.background='';" />`;
-              }
+              applyImg(i, url);
+              newCache[item.link] = url;
+              kujiImgWrite(newCache); // persist cache
             })
             .catch(() => clearTimeout(timer));
-        }, i * 350);
+        }, delay);
       });
     }
 
@@ -1071,13 +1031,7 @@
     }
 
     // ── Render ────────────────────────────────────────────────
-    Promise.allSettled([loadSE(), loadKuji(), loadDragonBall(), loadShonenJump(), loadDengeki()]).then(([seResult, kujiResult, dbResult, sjResult, dhResult]) => {
-      const seItems   = seResult.status   === 'fulfilled' ? seResult.value   : [];
-      const kujiItems = kujiResult.status === 'fulfilled' ? kujiResult.value : [];
-      const dbItems   = dbResult.status   === 'fulfilled' ? dbResult.value   : [];
-      const sjItems   = sjResult.status   === 'fulfilled' ? sjResult.value   : [];
-      const dhItems   = dhResult.status   === 'fulfilled' ? dhResult.value   : [];
-
+    function renderAll(seItems, kujiItems, dbItems, sjItems, dhItems) {
       if (!seItems.length && !kujiItems.length && !dbItems.length && !sjItems.length && !dhItems.length) {
         grid.innerHTML = `
           <div style="grid-column:1/-1;padding:48px 0;text-align:center;border-top:1px solid var(--color-border);">
@@ -1085,8 +1039,6 @@
           </div>`;
         return;
       }
-
-      // Combine 4 sources, sort newest first
       const kujiTagged = kujiItems.map((item, i) => ({ ...item, _type: 'kuji', _idx: i }));
       const dbTagged   = dbItems.map(item => ({ ...item, _type: 'db' }));
       const sjTagged   = sjItems.map(item => ({ ...item, _type: 'sj' }));
@@ -1095,11 +1047,8 @@
         .sort((a, b) => parseItemDate(b) - parseItemDate(a));
 
       let html = '';
-
       html += renderCombinedSection(combined);
-
       html += renderSection(dhItems, (item, i) => makeDengekiCard(item, 'tl-card--quad', `dh-${i}`), 'dh', 'HOBBY.DENGEKI.COM&nbsp;—&nbsp;電撃ホビーウェブ', combined.length > 0);
-
       grid.innerHTML = html;
 
       // Wire VIEW MORE buttons — 20 items per click
@@ -1108,15 +1057,11 @@
         btn.addEventListener('click', () => {
           const src = btn.getAttribute('data-view-more');
           const hidden = Array.from(grid.querySelectorAll(`[data-more="${src}"]`));
-          // Show next batch
           hidden.slice(0, VIEW_MORE_BATCH).forEach(el => {
             el.removeAttribute('data-more');
             el.style.display = '';
           });
-          const remaining = hidden.length - VIEW_MORE_BATCH;
-          if (remaining <= 0) {
-            btn.parentElement.remove();
-          }
+          if (hidden.length <= VIEW_MORE_BATCH) btn.parentElement.remove();
           if (window.wireTimelineBookmarks) window.wireTimelineBookmarks();
           if (window.applyTimelineFilter)   window.applyTimelineFilter();
         });
@@ -1124,9 +1069,196 @@
 
       if (window.wireTimelineBookmarks) window.wireTimelineBookmarks();
       if (window.applyTimelineFilter)   window.applyTimelineFilter();
-
       if (kujiItems.length) loadKujiImages(kujiItems);
-    });
+    }
+
+    // ── Fetch all sources ──────────────────────────────────────
+    function fetchAll() {
+      return Promise.allSettled([loadSE(), loadKuji(), loadDragonBall(), loadShonenJump(), loadDengeki()])
+        .then(([seR, kujiR, dbR, sjR, dhR]) => ({
+          se:   seR.status   === 'fulfilled' ? seR.value   : [],
+          kuji: kujiR.status === 'fulfilled' ? kujiR.value : [],
+          db:   dbR.status   === 'fulfilled' ? dbR.value   : [],
+          sj:   sjR.status   === 'fulfilled' ? sjR.value   : [],
+          dh:   dhR.status   === 'fulfilled' ? dhR.value   : [],
+        }));
+    }
+
+    // ── Cache-first load strategy ─────────────────────────────
+    // Fresh (<20min): render from cache instantly, silently refresh in background
+    // Stale (20-60min): render from cache instantly, fetch fresh + re-render
+    // Expired (>60min): show spinner, fetch, render
+    const cached = cacheRead();
+    if (cached) {
+      // Render from cache immediately (no spinner delay)
+      renderAll(cached.se, cached.kuji, cached.db, cached.sj, cached.dh);
+      const age = Date.now() - cached.ts;
+      if (age < CACHE_FRESH) {
+        // Fresh: silent background refresh (update cache only, no re-render)
+        setTimeout(() => {
+          fetchAll().then(d => cacheWrite(d.se, d.kuji, d.db, d.sj, d.dh));
+        }, 3000);
+      } else {
+        // Stale: fetch fresh + re-render
+        fetchAll().then(d => {
+          cacheWrite(d.se, d.kuji, d.db, d.sj, d.dh);
+          renderAll(d.se, d.kuji, d.db, d.sj, d.dh);
+        });
+      }
+    } else {
+      // No cache: fetch and render (spinner already shown by HTML)
+      fetchAll().then(d => {
+        cacheWrite(d.se, d.kuji, d.db, d.sj, d.dh);
+        renderAll(d.se, d.kuji, d.db, d.sj, d.dh);
+      });
+    }
+  })();
+
+  // ── note RSS loader ───────────────────────────────────────────
+  (function noteLoader() {
+    const NOTE_RSS       = 'https://note.com/age749/rss';
+    const NOTE_CACHE_KEY = 'c3_note_v1';
+    const NOTE_FRESH     = 30 * 60 * 1000; // 30 min
+    const NOTE_STALE     = 90 * 60 * 1000; // 90 min
+    const noteGrid       = document.getElementById('note-grid');
+    if (!noteGrid) return;
+
+    const BM_SVG = '<svg viewBox="0 0 12 14" fill="currentColor"><path d="M0 0h12v14L6 10 0 14z"/></svg>';
+
+    function escHtml(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ── cache helpers ──────────────────────────────────────────
+    function noteReadCache() {
+      try {
+        const c = JSON.parse(localStorage.getItem(NOTE_CACHE_KEY) || 'null');
+        if (!c || Date.now() - c.ts > NOTE_STALE) return null;
+        return c;
+      } catch(e) { return null; }
+    }
+    function noteWriteCache(items) {
+      try { localStorage.setItem(NOTE_CACHE_KEY, JSON.stringify({ ts: Date.now(), items })); } catch(e) {}
+    }
+
+    // ── RSS parsing ────────────────────────────────────────────
+    function parseNoteItems(xmlText) {
+      const xml = new DOMParser().parseFromString(xmlText, 'text/xml');
+      return Array.from(xml.querySelectorAll('item')).slice(0, 8).map(el => {
+        const title   = el.querySelector('title')?.textContent?.trim() || '(タイトルなし)';
+        const link    = el.querySelector('link')?.textContent?.trim() || '#';
+        const pubDate = el.querySelector('pubDate')?.textContent?.trim() || '';
+        // Date → "MM.DD"
+        let dateStr = '';
+        if (pubDate) {
+          const d = new Date(pubDate);
+          if (!isNaN(d)) {
+            dateStr = `${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+          }
+        }
+        // Image: try enclosure, media:thumbnail, or first <img> in description/content
+        const MEDIA_NS = 'http://search.yahoo.com/mrss/';
+        const enclosure = el.querySelector('enclosure[type^="image"]')?.getAttribute('url');
+        const mediaTh   = el.getElementsByTagNameNS(MEDIA_NS, 'thumbnail')[0]?.getAttribute('url');
+        const mediaCont = el.getElementsByTagNameNS(MEDIA_NS, 'content')[0]?.getAttribute('url');
+        let image = enclosure || mediaTh || mediaCont || null;
+        if (!image) {
+          const desc = el.querySelector('description')?.textContent || '';
+          const m = desc.match(/<img[^>]+src=["']([^"']+)["']/i);
+          if (m) image = m[1];
+        }
+        // Excerpt: strip HTML from description
+        const desc = el.querySelector('description')?.textContent || '';
+        const plain = desc.replace(/<[^>]+>/g, '').replace(/&[a-z]+;/gi, ' ').trim();
+        const excerpt = plain.length > 80 ? plain.slice(0, 80) + '…' : plain;
+
+        return { title, link, dateStr, image, excerpt };
+      });
+    }
+
+    // ── fetch from RSS via proxy ───────────────────────────────
+    // note.com blocks codetabs, so use corsproxy.io directly
+    const NOTE_PROXY = 'https://corsproxy.io/?';
+    function fetchNote() {
+      return fetch(NOTE_PROXY + encodeURIComponent(NOTE_RSS))
+        .then(r => r.text())
+        .then(txt => parseNoteItems(txt));
+    }
+
+    // ── render ─────────────────────────────────────────────────
+    function renderNote(items) {
+      if (!items || !items.length) {
+        noteGrid.innerHTML = `<div style="grid-column:1/-1;padding:48px 0;text-align:center;color:var(--color-tertiary);font-size:13px;font-family:var(--font-family-mono);letter-spacing:0.08em;">NO ARTICLES YET</div>`;
+        return;
+      }
+
+      const TS = 'width:100%;height:100%;object-fit:cover;display:block;';
+      const ERR = "this.parentElement.style.display='none'";
+      const NOTE_COLOR = '#41C9B4';
+
+      // Feature card (item 0)
+      const feat = items[0];
+      const featHtml = `
+        <article class="ed-feature">
+          ${feat.image ? `<div class="ed-feature__media"><img src="${escHtml(feat.image)}" alt="" style="${TS}" loading="lazy" onerror="${ERR}"></div>` : ''}
+          <div class="ed-feature__kicker" style="color:${NOTE_COLOR};">note</div>
+          <h2 class="ed-feature__title">
+            <a href="${escHtml(feat.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escHtml(feat.title)}</a>
+          </h2>
+          ${feat.excerpt ? `<p class="ed-feature__excerpt">${escHtml(feat.excerpt)}</p>` : ''}
+          <div class="ed-feature__meta">
+            <span>${escHtml(feat.dateStr)}</span>
+            <button class="ed-bm" aria-label="ブックマーク" data-bm="note-0">${BM_SVG}</button>
+          </div>
+        </article>`;
+
+      // List cards (items 1–7)
+      let listHtml = '';
+      items.slice(1).forEach((it, i) => {
+        const idx = i + 1;
+        listHtml += `
+          <article class="ed-row">
+            <div class="ed-row__media">
+              ${it.image
+                ? `<img src="${escHtml(it.image)}" alt="" style="${TS}" loading="lazy" onerror="${ERR}">`
+                : `<span class="ed-row__media placeholder">note</span>`}
+            </div>
+            <div>
+              <div class="ed-row__kicker" style="color:${NOTE_COLOR};">note &middot; ${escHtml(it.dateStr)}</div>
+              <h3 class="ed-row__title">
+                <a href="${escHtml(it.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escHtml(it.title)}</a>
+              </h3>
+              <div class="ed-row__footer">
+                <span class="ed-row__meta"></span>
+                <button class="ed-bm" aria-label="ブックマーク" data-bm="note-${idx}">${BM_SVG}</button>
+              </div>
+            </div>
+          </article>`;
+      });
+
+      noteGrid.innerHTML = featHtml + (listHtml ? `<div class="ed-list">${listHtml}</div>` : '');
+
+      // Wire bookmark buttons
+      noteGrid.querySelectorAll('.ed-bm').forEach(btn => {
+        if (window.wireBookmarkToggle) window.wireBookmarkToggle(btn);
+      });
+    }
+
+    // ── cache-first load ───────────────────────────────────────
+    const cached = noteReadCache();
+    if (cached) {
+      renderNote(cached.items);
+      const age = Date.now() - cached.ts;
+      if (age < NOTE_FRESH) {
+        setTimeout(() => fetchNote().then(items => noteWriteCache(items)), 5000);
+      } else {
+        fetchNote().then(items => { noteWriteCache(items); renderNote(items); }).catch(() => {});
+      }
+    } else {
+      fetchNote()
+        .then(items => { noteWriteCache(items); renderNote(items); })
+        .catch(() => { noteGrid.innerHTML = ''; });
+    }
   })();
 </script>
 
