@@ -1403,8 +1403,12 @@ html[data-card-mood="outlined"] .tl-card__bookmark {
 
 @media (max-width: 640px) {
   :root { --gutter: 16px; }
-  .timeline-grid { grid-template-columns: 1fr; }
-  .tl-card--hero, .tl-card--side, .tl-card--quad, .tl-card--third, .side-stack { grid-column: span 1; }
+  /* 2-column grid so tl-card--quad (電撃) displays 2 per row */
+  .timeline-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Full-width items */
+  .tl-card--hero, .tl-card--side, .tl-card--third, .side-stack { grid-column: 1 / -1; }
+  /* Dengeki quad cards: span 1 = half width = 2 columns */
+  .tl-card--quad { grid-column: span 1; }
   .side-stack .tl-card { flex-direction: column; }
   .side-stack .tl-card__media { aspect-ratio: 16/9; }
   .page-band__inner { grid-template-columns: 1fr; }
