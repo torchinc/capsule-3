@@ -1185,6 +1185,48 @@
         .then(txt => parseNoteItems(txt));
     }
 
+    // ── OG image loader ────────────────────────────────────────
+    // note.com article pages have og:image — fetch and inject after render
+    const NOTE_IMG_CACHE_KEY = 'c3_note_imgs_v1';
+    function noteImgRead()      { try { return JSON.parse(localStorage.getItem(NOTE_IMG_CACHE_KEY) || '{}'); } catch(e) { return {}; } }
+    function noteImgWrite(map)  { try { localStorage.setItem(NOTE_IMG_CACHE_KEY, JSON.stringify(map)); } catch(e) {} }
+
+    function loadNoteImages(items) {
+      const imgCache = noteImgRead();
+      const newCache = { ...imgCache };
+      const TS = 'width:100%;height:100%;object-fit:cover;display:block;';
+
+      items.forEach((item, i) => {
+        const mediaEl = document.getElementById(`note-img-${i}`);
+        if (!mediaEl) return;
+
+        // Already cached?
+        if (imgCache[item.link]) {
+          mediaEl.innerHTML = `<img src="${escHtml(imgCache[item.link])}" alt="" style="${TS}" loading="lazy" onerror="this.parentElement.style.display='none'">`;
+          return;
+        }
+
+        // Stagger fetches slightly to avoid hammering
+        setTimeout(() => {
+          fetch(NOTE_PROXY + encodeURIComponent(item.link))
+            .then(r => r.text())
+            .then(html => {
+              const doc = new DOMParser().parseFromString(html, 'text/html');
+              const ogImg = doc.querySelector('meta[property="og:image"]')?.getAttribute('content')
+                         || doc.querySelector('meta[name="twitter:image"]')?.getAttribute('content');
+              if (ogImg) {
+                mediaEl.innerHTML = `<img src="${escHtml(ogImg)}" alt="" style="${TS}" loading="lazy" onerror="this.parentElement.style.display='none'">`;
+                newCache[item.link] = ogImg;
+                noteImgWrite(newCache);
+              } else {
+                mediaEl.style.display = 'none';
+              }
+            })
+            .catch(() => { mediaEl.style.display = 'none'; });
+        }, i * 200);
+      });
+    }
+
     // ── render ─────────────────────────────────────────────────
     function renderNote(items) {
       if (!items || !items.length) {
@@ -1192,15 +1234,14 @@
         return;
       }
 
-      const TS = 'width:100%;height:100%;object-fit:cover;display:block;';
-      const ERR = "this.parentElement.style.display='none'";
       const NOTE_COLOR = '#41C9B4';
+      const PLACEHOLDER_STYLE = 'background:var(--color-bg-base);';
 
       // Feature card (item 0)
       const feat = items[0];
       const featHtml = `
         <article class="ed-feature">
-          ${feat.image ? `<div class="ed-feature__media"><img src="${escHtml(feat.image)}" alt="" style="${TS}" loading="lazy" onerror="${ERR}"></div>` : ''}
+          <div class="ed-feature__media" id="note-img-0" style="${PLACEHOLDER_STYLE}"></div>
           <div class="ed-feature__kicker" style="color:${NOTE_COLOR};">note</div>
           <h2 class="ed-feature__title">
             <a href="${escHtml(feat.link)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${escHtml(feat.title)}</a>
@@ -1218,11 +1259,7 @@
         const idx = i + 1;
         listHtml += `
           <article class="ed-row">
-            <div class="ed-row__media">
-              ${it.image
-                ? `<img src="${escHtml(it.image)}" alt="" style="${TS}" loading="lazy" onerror="${ERR}">`
-                : `<span class="ed-row__media placeholder">note</span>`}
-            </div>
+            <div class="ed-row__media" id="note-img-${idx}" style="${PLACEHOLDER_STYLE}"></div>
             <div>
               <div class="ed-row__kicker" style="color:${NOTE_COLOR};">note &middot; ${escHtml(it.dateStr)}</div>
               <h3 class="ed-row__title">
@@ -1242,6 +1279,9 @@
       noteGrid.querySelectorAll('.ed-bm').forEach(btn => {
         if (window.wireBookmarkToggle) window.wireBookmarkToggle(btn);
       });
+
+      // Load OG images after DOM is ready
+      loadNoteImages(items);
     }
 
     // ── cache-first load ───────────────────────────────────────
